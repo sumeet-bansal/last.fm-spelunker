@@ -47,13 +47,8 @@ def process_track(track):
 			flattened[key] = None
 	return flattened
 
-# basic database setup
-db = dataset.connect('sqlite:///last-fm.db')
-tracks = db['scrobbles']
-
-# iterate through each page
-for page in pages:
-
-    # iterate through each track and process and insert it
-    for track in page['recenttracks']['track']:
-        tracks.insert(process_track(track))
+# iterates through, processes, and inserts each scrobble
+with dataset.connect('sqlite:///last-fm.db') as db:
+	for page in pages:
+		for track in page['recenttracks']['track']:
+			db['scrobbles'].insert(process_track(track))
