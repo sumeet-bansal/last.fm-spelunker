@@ -35,12 +35,10 @@ def flatten(d, parent_key=''):
 
 # processes track for SQL insertion
 def process_track(track):
-	if 'image' in track:
-		del track['image']
-	if 'streamable' in track:
-		del track['streamable']
-	if 'url' in track:
-		del track['url']
+	props = ['image', 'streamable', 'url', '@attr']
+	for prop in props:
+		if prop in track:
+			del track[prop]
 	flattened = flatten(track)
 	for key, val in flattened.items():
 		if val == '':
