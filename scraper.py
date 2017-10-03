@@ -1,6 +1,7 @@
 # partially adapted from Matt Lewis's scraper
 
 import requests
+import sys
 import collections
 import dataset
 
@@ -9,16 +10,19 @@ USER = 'sbansal21'
 API_KEY = '2bf228a2ce0167b5b857dd53ea6f39c1'
 ROOT_URL = 'https://ws.audioscrobbler.com/2.0/'
 PER_PAGE = 200
-API_URL = ROOT_URL + '/?method=user.getrecenttracks&user=' + USER + '&api_key=' + API_KEY + '&format=json&page=%s&limit=%s'
+RECENT_URL = ROOT_URL + '/?method=user.getrecenttracks&user=' + USER + '&api_key=' + API_KEY + '&format=json&page=%s&limit=%s'
 
 # gets total num of pages
-resp = requests.get(API_URL % (1, PER_PAGE)).json()
+resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
 totalPages = int(resp['recenttracks']['@attr']['totalPages'])
 
 # adds all pages to a list
 pages = []
 for page in range(1, totalPages + 1):
-	pages.append(requests.get(API_URL % (page, PER_PAGE)).json())
+	pages.append(requests.get(RECENT_URL % (page, PER_PAGE)).json())
+	sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(totalPages))
+	sys.stdout.flush()
+print("\rRetrieved scrobble history.")
 
 # flattens the JSON into a uniform depth (i.e. a series of keys and non-nested values)
 # modified from http://stackoverflow.com/a/6027615/254187 to strip pound symbols
