@@ -12,15 +12,15 @@ ROOT_URL = 'https://ws.audioscrobbler.com/2.0/'
 PER_PAGE = 200
 RECENT_URL = ROOT_URL + '/?method=user.getrecenttracks&user=' + USER + '&api_key=' + API_KEY + '&format=json&page=%s&limit=%s'
 
-# gets total num of pages
+# gets total num of pages in last.fm user history
 resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
-totalPages = int(resp['recenttracks']['@attr']['totalPages'])
+TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
 
-# adds all pages to a list
-pages = []
-for page in range(1, totalPages + 1):
-	pages.append(requests.get(RECENT_URL % (page, PER_PAGE)).json())
-	sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(totalPages))
+# adds all scrobbles to a list
+scrobbles = []
+for page in range(1, TOTAL_PAGES + 1):
+	scrobbles.extend(requests.get(RECENT_URL % (page, PER_PAGE)).json()['recenttracks']['track'])
+	sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(TOTAL_PAGES))
 	sys.stdout.flush()
 print("\rRetrieved scrobble history.")
 
@@ -37,13 +37,13 @@ def flatten(d, parent_key=''):
 			items.append((new_key, v))
 	return dict(items)
 
-# processes track for SQL insertion
-def process_track(track):
+# processes scrobble for SQL insertion
+def process_scrobble(scrobble):
 	props = ['image', 'streamable', 'url', '@attr']
 	for prop in props:
-		if prop in track:
-			del track[prop]
-	flattened = flatten(track)
+		if prop in scrobble:
+			del scrobble[prop]
+	flattened = flatten(scrobble)
 	for key, val in flattened.items():
 		if val == '':
 			flattened[key] = None
@@ -51,6 +51,5 @@ def process_track(track):
 
 # iterates through, processes, and inserts each scrobble
 with dataset.connect('sqlite:///last-fm.db') as db:
-	for page in pages:
-		for track in page['recenttracks']['track']:
-			db['scrobbles'].insert(process_track(track))
+	for scrobble in scrobbles:
+		db['scrobbles'].insert(process_scrobble(scrobble))
