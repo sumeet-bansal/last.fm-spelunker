@@ -4,6 +4,7 @@ import requests
 import sys
 import collections
 import dataset
+from datetime import datetime
 
 # constants
 USER = 'sbansal21'
@@ -39,17 +40,32 @@ def flatten(d, parent_key=''):
 
 # processes scrobble for SQL insertion
 def process_scrobble(scrobble):
+
+	# removes unnecessary attributes
 	props = ['image', 'streamable', 'url', '@attr']
 	for prop in props:
 		if prop in scrobble:
 			del scrobble[prop]
+
+	# flattens the track JSON
 	flattened = flatten(scrobble)
 	for key, val in flattened.items():
 		if val == '':
 			flattened[key] = None
+
+	if 'date_uts' in flattened:
+		dt = datetime.fromtimestamp(int(flattened['date_uts']))
+		flattened['date_year'] = dt.year
+		flattened['date_month'] = dt.month
+		flattened['date_date'] = dt.day
+		flattened['date_hour'] = dt.hour
+	else:
+		flattened = None
 	return flattened
 
 # iterates through, processes, and inserts each scrobble
 with dataset.connect('sqlite:///last-fm.db') as db:
 	for scrobble in scrobbles:
-		db['scrobbles'].insert(process_scrobble(scrobble))
+		processed = process_scrobble(scrobble)
+		if processed is not None:
+			db['scrobbles'].insert(processed)
