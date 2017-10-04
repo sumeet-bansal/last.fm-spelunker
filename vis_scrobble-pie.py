@@ -6,6 +6,7 @@ size = 1000
 stream_limit = 0.75
 artist_limit = 50
 chartname = 'scrobble-pie'
+metric = 'artist_text'
 
 # file properties
 filename = chartname + '.html'
@@ -13,12 +14,13 @@ filename = chartname + '.html'
 # gets all artists and their respective play counts in order of greatest count to least
 db = dataset.connect('sqlite:///last-fm.db')
 total = db['scrobbles'].count()
-result = db.query('SELECT artist_text, count(artist_text) FROM scrobbles GROUP BY artist_text ORDER BY count(artist_text) DESC')
+sql = 'SELECT {0}, count({0}) FROM scrobbles GROUP BY {0} ORDER BY count({0}) DESC'.format(metric)
+result = db.query(sql)
 artists = []
 streams = []
 for row in result:
-	artists.append(row['artist_text'])
-	streams.append(int(row['count(artist_text)']))
+	artists.append(row[metric])
+	streams.append(int(row['count(%s)' % metric]))
 
 # iterates through all artists and isolates the most significant (i.e. most listened to)
 sig_artists = []
