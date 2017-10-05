@@ -7,7 +7,11 @@ import dataset
 from datetime import datetime
 
 # constants
-USER = 'sbansal21'
+try:
+	USER = sys.argv[1]
+except IndexError:
+	print("[ERROR] No last.fm username specified.")
+	quit()
 API_KEY = '2bf228a2ce0167b5b857dd53ea6f39c1'
 ROOT_URL = 'https://ws.audioscrobbler.com/2.0/'
 PER_PAGE = 200
