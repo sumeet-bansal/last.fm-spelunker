@@ -16,6 +16,7 @@ API_KEY = '2bf228a2ce0167b5b857dd53ea6f39c1'
 ROOT_URL = 'https://ws.audioscrobbler.com/2.0/'
 PER_PAGE = 200
 RECENT_URL = ROOT_URL + '/?method=user.getrecenttracks&user=' + USER + '&api_key=' + API_KEY + '&format=json&page=%s&limit=%s'
+ARTIST_URL = ROOT_URL + '/?method=artist.getinfo&api_key=' + API_KEY + '&artist=%s&format=json'
 
 # gets total num of pages in last.fm user history
 resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
@@ -42,14 +43,19 @@ def flatten(d, parent_key=''):
 			items.append((new_key, v))
 	return dict(items)
 
+# removes all matching properties in the `props` list from the json object
+def clean(json, props):
+	for prop in props:
+		if prop in json:
+			del json[prop]
+	return json
+
 # processes scrobble for SQL insertion
 def process_scrobble(scrobble):
 
 	# removes unnecessary attributes
 	props = ['image', 'streamable', 'url', '@attr']
-	for prop in props:
-		if prop in scrobble:
-			del scrobble[prop]
+	scrobble = clean(scrobble, props)
 
 	# flattens the track JSON
 	flattened = flatten(scrobble)
@@ -67,9 +73,69 @@ def process_scrobble(scrobble):
 		flattened = None
 	return flattened
 
+# processes artist for SQL insertion
+def process_artist(artist):
+
+	# removes unnecessary attributes
+	props = ['ontour', 'image', 'streamable', 'url', 'bio']
+	artist = clean(artist, props)
+
+	# compresses related artists to a single value
+	related = None
+	if 'similar' in artist:
+		related = []
+		for relatedArtist in artist['similar']['artist']:
+			relatedArtist = process_artist(relatedArtist)
+			related.append(relatedArtist['name'].replace(',', ''))
+		del artist['similar']
+
+	# compresses artist tags to a single value
+	tags = None
+	if 'tags' in artist:
+		tags = []
+		for tag in artist['tags']['tag']:
+			tags.append(tag['name'])
+		del artist['tags']
+
+	# converts all artist stats to ints
+	if 'stats' in artist:
+		for stat in artist['stats']:
+			artist['stats'][stat] = int(artist['stats'][stat])
+
+	# flattens the track JSON
+	flattened = flatten(artist)
+	for key, val in flattened.items():
+		if val == '':
+			flattened[key] = None
+
+	if related is not None:
+		flattened['related'] = ", ".join(related)
+	if tags is not None:
+		flattened['tags'] = ", ".join(tags)
+
+	return flattened
+
 # iterates through, processes, and inserts each scrobble
 with dataset.connect('sqlite:///last-fm.db') as db:
 	for scrobble in scrobbles:
 		processed = process_scrobble(scrobble)
 		if processed is not None:
 			db['scrobbles'].insert(processed)
+
+# grabs and inserts info for all distinct scrobbled artists
+with dataset.connect('sqlite:///last-fm.db') as db:
+	errors = []
+	result = db['scrobbles'].distinct('artist_text')
+	sql = 'SELECT COUNT(DISTINCT artist_text) AS count FROM scrobbles'
+	totalArtists = int(db.query(sql).next()['count'])
+	for index, row in enumerate(result):
+		artist = requests.get(ARTIST_URL % row['artist_text']).json()
+		sys.stdout.write("\rRetrieving artist info...\t" + str(index) + " of " + str(totalArtists))
+		sys.stdout.flush()
+		try:
+			processed = process_artist(artist['artist'])
+			db['artists'].insert(processed)
+		except KeyError:
+			errors.append(row['artist_text'])
+	print("\rRetrieved artist info.")
+	print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
