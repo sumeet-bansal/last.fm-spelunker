@@ -19,10 +19,13 @@ for row in result:
 	if artist not in streams:
 		streams[artist] = [0 for i in range(12)]
 	dt = datetime.fromtimestamp(int(row['date_uts']))
-	streams[artist][int(dt.month)] = row['count(%s)' % metric]
+	streams[artist][int(dt.month) - 1] = row['count(%s)' % metric]
 
 with open('stream-data.csv', 'w') as csv:
 	csv.write('key,value,date\n')
-	for i in range(1, 12):
+	for i in range(12):
 		for artist in streams:
-			csv.write('%s,%s,%s\n' % (artist.replace(',', ''), streams[artist][i], '%s/01/17' % str(i)))
+			try:
+				csv.write('%s,%s,%s\n' % (artist.replace(',', ''), streams[artist][i], '%s/01/17' % str(i + 1)))
+			except UnicodeEncodeError:
+				pass
