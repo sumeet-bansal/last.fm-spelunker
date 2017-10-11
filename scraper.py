@@ -64,7 +64,8 @@ def process_scrobble(scrobble):
 			flattened[key] = None
 
 	if 'date_uts' in flattened:
-		dt = datetime.fromtimestamp(int(flattened['date_uts']))
+		flattened['date_uts'] = int(flattened['date_uts'])
+		dt = datetime.fromtimestamp(flattened['date_uts'])
 		flattened['date_year'] = dt.year
 		flattened['date_month'] = dt.month
 		flattened['date_date'] = dt.day
