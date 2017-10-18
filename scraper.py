@@ -131,12 +131,14 @@ with dataset.connect('sqlite:///last-fm.db') as db:
 	totalArtists = int(db.query(sql).next()['count'])
 	for index, row in enumerate(result):
 		artist = requests.get(ARTIST_URL % row['artist_text']).json()
-		sys.stdout.write("\rRetrieving artist info...\t" + str(index) + " of " + str(totalArtists))
+		sys.stdout.write("\rRetrieving artist info...\t%s of %s" % (str(index), str(totalArtists)))
 		sys.stdout.flush()
 		try:
 			processed = process_artist(artist['artist'])
 			db['artists'].insert(processed)
 		except KeyError:
 			errors.append(row['artist_text'])
+	sys.stdout.write("\rRetrieving artist info...\t{0} of {0}".format(str(totalArtists)))
+	sys.stdout.flush()
 	print("\rRetrieved artist info.")
 	print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
