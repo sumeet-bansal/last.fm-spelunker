@@ -34,7 +34,10 @@ for row in result:
 		streams[artist] = [0 for i in range(timeframe)]
 	current = datetime.fromtimestamp(int(row['date_uts']))
 	elapsed = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=current)])
-	streams[artist][elapsed - 1] = row['count(%s)' % metric]
+	if streams[artist][elapsed - 1] == 0:
+		streams[artist][elapsed - 1] = row['count(%s)' % metric]
+	else:
+		streams[artist][elapsed] = row['count(%s)' % metric]
 
 with open('stream-data.csv', 'w') as csv:
 	csv.write('key,value,date\n')
