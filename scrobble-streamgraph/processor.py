@@ -16,7 +16,15 @@ timeframe = db.query('SELECT MIN(date_uts), MAX(date_uts) FROM scrobbles').next(
 mintime = datetime.fromtimestamp(timeframe['MIN(date_uts)'])
 maxtime = datetime.fromtimestamp(timeframe['MAX(date_uts)'])
 timeframe = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=maxtime)])
-sql = 'SELECT {0}, date_uts, count({0}) FROM scrobbles GROUP BY {0}, date_year, date_month HAVING count({0}) > {1}'.format(metric, stream_limit)
+sql = 'SELECT DISTINCT {0} FROM scrobbles GROUP BY {0}, date_year, date_month HAVING count({0}) > {1}'.format(metric, stream_limit)
+result = db.query(sql)
+
+artists = []
+for row in result:
+	artists.append(row[metric])
+artists = '(%s)' % str(artists)[1:-1]
+
+sql = 'SELECT {0}, date_uts, count({0}) FROM scrobbles GROUP BY {0}, date_year, date_month HAVING {0} IN {1}'.format(metric, artists)
 result = db.query(sql)
 
 streams = {}
