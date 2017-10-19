@@ -13,3 +13,6 @@ Thumbs.db
 
 # SQLite files
 *.db
+
+# spelunker generated files
+*.csv
