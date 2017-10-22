@@ -18,18 +18,6 @@ PER_PAGE = 200
 RECENT_URL = ROOT_URL + '/?method=user.getrecenttracks&user=' + USER + '&api_key=' + API_KEY + '&format=json&page=%s&limit=%s'
 ARTIST_URL = ROOT_URL + '/?method=artist.getinfo&api_key=' + API_KEY + '&artist=%s&format=json'
 
-# gets total num of pages in last.fm user history
-resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
-TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
-
-# adds all scrobbles to a list
-scrobbles = []
-for page in range(1, TOTAL_PAGES + 1):
-	scrobbles.extend(requests.get(RECENT_URL % (page, PER_PAGE)).json()['recenttracks']['track'])
-	sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(TOTAL_PAGES))
-	sys.stdout.flush()
-print("\rRetrieved scrobble history.")
-
 # flattens the JSON into a uniform depth (i.e. a series of keys and non-nested values)
 # modified from http://stackoverflow.com/a/6027615/254187 to strip pound symbols
 def flatten(d, parent_key=''):
@@ -116,29 +104,48 @@ def process_artist(artist):
 
 	return flattened
 
-# iterates through, processes, and inserts each scrobble
-with dataset.connect('sqlite:///last-fm.db') as db:
-	for scrobble in scrobbles:
-		processed = process_scrobble(scrobble)
-		if processed is not None:
-			db['scrobbles'].insert(processed)
+def scrobbles():
+	# gets total num of pages in last.fm user history
+	resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
+	TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
 
-# grabs and inserts info for all distinct scrobbled artists
-with dataset.connect('sqlite:///last-fm.db') as db:
-	errors = []
-	result = db['scrobbles'].distinct('artist_text')
-	sql = 'SELECT COUNT(DISTINCT artist_text) AS count FROM scrobbles'
-	totalArtists = int(db.query(sql).next()['count'])
-	for index, row in enumerate(result):
-		artist = requests.get(ARTIST_URL % row['artist_text']).json()
-		sys.stdout.write("\rRetrieving artist info...\t%s of %s" % (str(index), str(totalArtists)))
+	# adds all scrobbles to a list
+	scrobbles = []
+	for page in range(1, TOTAL_PAGES + 1):
+		scrobbles.extend(requests.get(RECENT_URL % (page, PER_PAGE)).json()['recenttracks']['track'])
+		sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(TOTAL_PAGES))
 		sys.stdout.flush()
-		try:
-			processed = process_artist(artist['artist'])
-			db['artists'].insert(processed)
-		except KeyError:
-			errors.append(row['artist_text'])
-	sys.stdout.write("\rRetrieving artist info...\t{0} of {0}".format(str(totalArtists)))
-	sys.stdout.flush()
-	print("\rRetrieved artist info.")
-	print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
+	print("\rRetrieved scrobble history.")
+
+	# iterates through, processes, and inserts each scrobble
+	with dataset.connect('sqlite:///last-fm.db') as db:
+		for scrobble in scrobbles:
+			processed = process_scrobble(scrobble)
+			if processed is not None:
+				db['scrobbles'].insert(processed)
+
+def artists():
+	# grabs and inserts info for all distinct scrobbled artists
+	with dataset.connect('sqlite:///last-fm.db') as db:
+		errors = []
+		result = db['scrobbles'].distinct('artist_text')
+		sql = 'SELECT COUNT(DISTINCT artist_text) AS count FROM scrobbles'
+		totalArtists = int(db.query(sql).next()['count'])
+		for index, row in enumerate(result):
+			artist = requests.get(ARTIST_URL % row['artist_text']).json()
+			sys.stdout.write("\rRetrieving artist info...\t%s of %s" % (str(index), str(totalArtists)))
+			sys.stdout.flush()
+			try:
+				processed = process_artist(artist['artist'])
+				db['artists'].insert(processed)
+			except KeyError:
+				errors.append(row['artist_text'])
+		sys.stdout.write("\rRetrieving artist info...\t{0} of {0}".format(str(totalArtists)))
+		sys.stdout.flush()
+		print("\rRetrieved artist info.")
+		if errors:
+			print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
+
+if __name__ == "__main__":
+	scrobbles()
+	artists()
