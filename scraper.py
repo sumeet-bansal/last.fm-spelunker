@@ -5,6 +5,7 @@ import sys
 import collections
 import dataset
 from datetime import datetime
+import scrubber
 
 # constants
 try:
@@ -148,4 +149,6 @@ def artists():
 
 if __name__ == "__main__":
 	scrobbles()
+	scrubber.renvariant()
+	scrubber.dotslash()
 	artists()
