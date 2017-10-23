@@ -108,7 +108,11 @@ def process_artist(artist):
 def scrobbles():
 	# gets total num of pages in last.fm user history
 	resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
-	TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
+	try:
+		TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
+	except KeyError:
+		print("[ERROR] No last.fm username specified.")
+		quit()
 
 	# adds all scrobbles to a list
 	scrobbles = []
