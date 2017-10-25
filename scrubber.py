@@ -1,9 +1,10 @@
-# currently just renames albums with some variant of '(Explicit)' in their title
+# currently just renames albums with some variant of '(Explicit)' in their title and applies a SQL script
 import dataset
 
 # constants
 script = 'scrubscript.sql'
 
+# renames albums with 'Explicit' or variants in title
 def renvariant():
 	with dataset.connect('sqlite:///last-fm.db') as db:
 
@@ -49,6 +50,7 @@ def renvariant():
 			sql = 'UPDATE scrobbles SET album_text = \'%s\' WHERE album_text = \'%s\'' % (album[:-len(standalone[album])], album)
 			db.query(sql)
 
+# applies SQL script
 def dotslash():
 	with open(script, 'r') as file:
 		with dataset.connect('sqlite:///last-fm.db') as db:
