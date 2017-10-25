@@ -7,6 +7,7 @@ Usage: `python scraper.py <last.fm username>`
 ```
 ~$ python scraper.py sbansal21
 Retrieved scrobble history... 444 of 444
+Retrieved artist info...      745 of 745
 ```
 
 ### spelunker
@@ -24,7 +25,7 @@ Like `scrobble-pie`, the `scrobble-stacked` function is also handled entirely by
 ```
 ~$ python vis_scrobble-stacked.py
 ```
-This creates a `scrobble-stacked.html` file that can be viewed in any browser (again, Chrome for best resuts).
+This creates a `scrobble-stacked.html` file that can be viewed in any browser (again, Chrome for best results).
 
 #### scrobble-stream
 Creating a streamgraph is a bit more involved (for now):
@@ -39,8 +40,9 @@ Usage: `python processor.py <minimum scrobbles>`
 ```
 `minimum scrobbles` just means the minimum number of scrobbles for an artist in any month to avoid cluttering the graph with random one-time scrobbles&mdash;10's a good number to start off with but larger minimums can reduce both noise and lag on the graph.
 
-2. Set up an HTTP server&mdash;this is pretty simple with Python. The commands differ for Python 2.X and 3.X. The version can be easily checked:
+2. Within the main directory, set up an HTTP server&mdash;this is pretty simple with Python. The commands differ for Python 2.X and 3.X. The version can be easily checked:
 ```
+~$ cd ..
 ~$ python --version
 ```
 
@@ -54,7 +56,7 @@ For Python 3.X:
 ~$ python -m http.server 8000
 ```
 
-From here, go to `localhost:8000/index.html` on any browser to view the streamgraph.
+From here, go to `localhost:8000/scrobble-streamgraph/index.html` on any browser to view the streamgraph.
 
 ![scrobble-streamgraph](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/images/streamgraph.png)
 ![focused scrobble-streamgraph](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/images/selected-streamgraph.png)
@@ -69,7 +71,7 @@ From here, go to `localhost:8000/index.html` on any browser to view the streamgr
 
 ### Planned Updates
 + better opts and a full command-line spelunker client
-+ implement a working model for scraping related data
-+ automate streamgraph generation
++ automate streamgraph generation (incl. pip dependencies)
 + fully migrate to [pure D3.js](https://d3js.org/) (currently uses the [python-nvd3](https://github.com/areski/python-nvd3) wrapper for pie and stacked area charts)
-+ create full webpages (read: pipe dream)
++ move to a full Node.js application with an actual routing system instead of just viewing files
++ evolve basic graph pages to full webpages with real CSS
