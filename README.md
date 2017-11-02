@@ -85,6 +85,5 @@ From here, go to `localhost:8000/scrobble-streamgraph/index.html` on any browser
 ### Planned Updates
 + better opts and a full command-line spelunker client
 + automate streamgraph generation (incl. pip dependencies)
-+ fully migrate to [pure D3.js](https://d3js.org/) (currently uses the [python-nvd3](https://github.com/areski/python-nvd3) wrapper for pie and stacked area charts)
 + move to a full Node.js application with an actual routing system instead of just viewing files
 + evolve basic graph pages to full webpages with real CSS
