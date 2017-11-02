@@ -14,22 +14,35 @@ Retrieved artist info...      745 of 745
 Generates a series of graphs based on scrobble data. Currently supports pie charts, stacked area charts, and streamgraphs. Note: this requires first generating the database via the scraper tool, as outlined [above](#scraper).
 
 #### scrobble-pie
-The `scrobble-pie` function is handled entirely by a single Python script:
+1. Enter the `scrobble-pie` directory and process some data:
 ```
-~$ python vis_scrobble-pie.py
+~$ cd scrobble-pie
 ```
-This creates a `scrobble-pie.html` file that can be viewed in any browser (Chrome comes highly recommended).
+Usage: `node db.js <percentage limit> <artist limit>`
+```
+~$ node db.js 0.4 25
+```
+`percentage limit` puts an upper bound on how much of the chart can be taken up by the "Other" category and `artist limit` sets a max number of artists that can be displayed on the chart.
 
-#### scrobble-stacked
-Like `scrobble-pie`, the `scrobble-stacked` function is also handled entirely by a single Python script:
+2. Within the main directory, set up an HTTP server&mdash;this is pretty simple with Python. The commands differ for Python 2.X and 3.X. The version can be easily checked:
 ```
-~$ python vis_scrobble-stacked.py
+~$ cd ..
+~$ python --version
 ```
-This creates a `scrobble-stacked.html` file that can be viewed in any browser (again, Chrome for best results).
+
+For Python 2.X:
+```
+~$ python -m SimpleHTTPServer 8000
+```
+
+For Python 3.X:
+```
+~$ python -m http.server 8000
+```
+
+From here, go to `localhost:8000/scrobble-pie/index.html` on any browser to view the streamgraph.
 
 #### scrobble-stream
-Creating a streamgraph is a bit more involved (for now):
-
 1. Enter the `scrobble-streamgraph` directory and process some data:
 ```
 ~$ cd scrobble-streamgraph
