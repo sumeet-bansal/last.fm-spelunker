@@ -16,3 +16,4 @@ Thumbs.db
 
 # spelunker generated files
 *.csv
+*.json
