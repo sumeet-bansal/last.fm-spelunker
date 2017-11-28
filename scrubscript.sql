@@ -127,6 +127,9 @@ UPDATE scrobbles SET album_text = 'Ginuwine...the Bachelor' WHERE artist_text = 
 /* GoldLink */
 UPDATE scrobbles SET album_text = 'At What Cost' WHERE artist_text = 'GoldLink' AND album_text = 'Crew';
 
+/* Goodie Mob */
+UPDATE scrobbles SET album_text = 'Soul Food', album_mbid = NULL WHERE artist_text = 'Goodie Mob' AND name = 'Cell Therapy';
+
 /* Gucci Mane */
 UPDATE scrobbles SET album_text = 'Mr. Davis' WHERE album_text = 'I Get The Bag (feat. Migos)';
 
