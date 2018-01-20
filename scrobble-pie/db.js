@@ -17,7 +17,7 @@ var db = new sqlite3.Database('../last-fm.db', function() {
 			var sql_select = 'SELECT artist_text AS artist, count(artist_text) AS count FROM scrobbles';
 			var sql_params = 'GROUP BY artist ORDER BY count DESC';
 			var sql = sql_select + ' ' + sql_params;
-			streamlimit = streamlimit * (1 - total);
+			streamlimit = streamlimit * total;
 			db.each(sql, function(err, row) {
 				if (result.length < artistlimit && count < streamlimit) {
 					obj = {};
