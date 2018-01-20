@@ -51,5 +51,12 @@ if __name__ == "__main__":
 	except IndexError:
 		print("[ERROR] No scrobble minimum specified.")
 		quit()
+
+	try:
+		int(stream_limit)
+	except ValueError:
+		print("[ERROR] Scrobble minimum must be an integer.")
+		quit()
+
 	metric = 'artist_text'
 	process(metric)
