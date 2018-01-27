@@ -43,7 +43,7 @@ def clean(json, props):
 def process_scrobble(scrobble):
 
 	# removes unnecessary attributes
-	props = ['image', 'streamable', 'url', '@attr']
+	props = ['image', 'streamable', 'url', '@attr', 'mbid']
 	scrobble = clean(scrobble, props)
 
 	# flattens the track JSON
@@ -51,6 +51,9 @@ def process_scrobble(scrobble):
 	for key, val in flattened.items():
 		if val == '':
 			flattened[key] = None
+
+	del flattened['artist_mbid']
+	del flattened['album_mbid']
 
 	if 'date_uts' in flattened:
 		flattened['date_uts'] = int(flattened['date_uts'])

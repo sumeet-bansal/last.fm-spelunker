@@ -35,15 +35,9 @@ def renvariant():
 
 		# renames all albums with normal and variant titles to the normal title
 		for album in valid:
-			mbid = db.query('SELECT album_mbid FROM scrobbles WHERE album_text = \'%s\'' % album).next()['album_mbid']
-			if mbid is None:
-				for alt in valid[album]:
-					sql = 'UPDATE scrobbles SET album_text = \'%s\', album_mbid = NULL WHERE album_text = \'%s\'' % (album, alt)
-					db.query(sql)
-			else:
-				for alt in valid[album]:
-					sql = 'UPDATE scrobbles SET album_text = \'%s\', album_mbid = \'%s\' WHERE album_text = \'%s\'' % (album, mbid, alt)
-					db.query(sql)
+			for alt in valid[album]:
+				sql = 'UPDATE scrobbles SET album_text = \'%s\' WHERE album_text = \'%s\'' % (album, alt)
+				db.query(sql)
 
 		# normalizes all albums with only variant titles
 		for album in standalone:
