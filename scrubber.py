@@ -9,9 +9,9 @@ def renvariant():
 	with dataset.connect('sqlite:///last-fm.db') as db:
 
 		# gets all distinct albums in database
-		sql = 'SELECT DISTINCT album_text FROM scrobbles'
+		sql = 'SELECT DISTINCT album FROM scrobbles'
 		result = db.query(sql)
-		albums = [str(row['album_text']) for row in result]
+		albums = [str(row['album']) for row in result]
 
 		# variations to screen for
 		versions = [' (Explicit)', ' (Explicit Version)', ' (Edited)']
@@ -36,12 +36,12 @@ def renvariant():
 		# renames all albums with normal and variant titles to the normal title
 		for album in valid:
 			for alt in valid[album]:
-				sql = 'UPDATE scrobbles SET album_text = \'%s\' WHERE album_text = \'%s\'' % (album, alt)
+				sql = 'UPDATE scrobbles SET album = \'%s\' WHERE album = \'%s\'' % (album, alt)
 				db.query(sql)
 
 		# normalizes all albums with only variant titles
 		for album in standalone:
-			sql = 'UPDATE scrobbles SET album_text = \'%s\' WHERE album_text = \'%s\'' % (album[:-len(standalone[album])], album)
+			sql = 'UPDATE scrobbles SET album = \'%s\' WHERE album = \'%s\'' % (album[:-len(standalone[album])], album)
 			db.query(sql)
 
 # applies SQL script

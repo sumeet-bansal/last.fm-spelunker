@@ -1,277 +1,286 @@
 /* Cleans some scrobbling data, sorted in order of artist. */
 
 /* 6LACK */
-UPDATE scrobbles SET name = 'PRBLMS' WHERE name = 'PRBLMS - Final';
+UPDATE scrobbles SET track = 'PRBLMS' WHERE track = 'PRBLMS - Final';
 
 /* A Tribe Called Quest */
-UPDATE scrobbles SET album_text = 'Midnight Marauders' WHERE name = 'Electric Relaxation';
+UPDATE scrobbles SET album = 'Midnight Marauders' WHERE track = 'Electric Relaxation';
 
 /* A$AP Ferg */
-UPDATE scrobbles SET album_text = 'Still Striving' WHERE artist_text = 'A$AP Ferg' AND album_text = 'East Coast REMIX';
+UPDATE scrobbles SET album = 'Still Striving' WHERE artist = 'A$AP Ferg' AND album = 'East Coast REMIX';
 
 /* A$AP Mob */
-UPDATE scrobbles SET album_text = 'Cozy Tapes: Vol. 1 Friends' WHERE album_text = 'Cozy Tapes: Vol. 1 Friends -';
-UPDATE scrobbles SET album_text = 'Cozy Tapes Vol. 2: Too Cozy' WHERE artist_text = 'A$AP Mob' AND album_text = 'RAF';
+UPDATE scrobbles SET album = 'Cozy Tapes: Vol. 1 Friends' WHERE album = 'Cozy Tapes: Vol. 1 Friends -';
+UPDATE scrobbles SET album = 'Cozy Tapes Vol. 2: Too Cozy' WHERE artist = 'A$AP Mob' AND album = 'RAF';
 
 /* Amine */
-UPDATE scrobbles SET album_text = 'Good for You' WHERE name = 'Caroline' AND album_text = 'Caroline';
+UPDATE scrobbles SET album = 'Good for You' WHERE track = 'Caroline' AND album = 'Caroline';
 
 /* Anderson .Paak */
-UPDATE scrobbles SET artist_text = 'Anderson .Paak' WHERE artist_text LIKE 'Anderson%Paak%' OR album_text = 'The Anderson .Paak EP';
-UPDATE scrobbles SET album_text = 'Malibu' WHERE album_text = 'MALIBU';
+UPDATE scrobbles SET artist = 'Anderson .Paak' WHERE artist LIKE 'Anderson%Paak%' OR album = 'The Anderson .Paak EP';
+UPDATE scrobbles SET album = 'Malibu' WHERE album = 'MALIBU';
 
 /* Big Boi */
-UPDATE scrobbles SET album_text = 'Sir Lucious Left Foot...The Son of Chico Dusty' WHERE album_text = 'Sir Lucious Left Foot...The Son Of Chico Dusty';
+UPDATE scrobbles SET album = 'Sir Lucious Left Foot...The Son of Chico Dusty' WHERE album = 'Sir Lucious Left Foot...The Son Of Chico Dusty';
 
 /* Big Grams */
-UPDATE scrobbles SET album_text = 'Big Grams' WHERE artist_text = 'Big Grams' AND name = 'Fell in the Sun';
+UPDATE scrobbles SET album = 'Big Grams' WHERE artist = 'Big Grams' AND track = 'Fell in the Sun';
 
 /* Big K.R.I.T. */
-UPDATE scrobbles SET album_text = 'Cadillactica (Deluxe)' WHERE album_text = 'Cadillactica';
+UPDATE scrobbles SET album = 'Cadillactica (Deluxe)' WHERE album = 'Cadillactica';
 
 /* Big Sean */
-UPDATE scrobbles SET album_text = 'I Decided.' WHERE artist_text = 'Big Sean' AND album_text = 'Bounce Back';
+UPDATE scrobbles SET album = 'I Decided.' WHERE artist = 'Big Sean' AND album = 'Bounce Back';
 
 /* Biz Markie */
-UPDATE scrobbles SET album_text = 'The Biz Never Sleeps' WHERE artist_text = 'Biz Markie' AND name = 'Just A Friend';
+UPDATE scrobbles SET album = 'The Biz Never Sleeps' WHERE artist = 'Biz Markie' AND track = 'Just A Friend';
 
 /* Blue in Green */
-UPDATE scrobbles SET album_text = 'The Break of Dawn' WHERE album_text IN ('The Break of Dawn (Remastered)', 'The Break OF Dawn');
+UPDATE scrobbles SET album = 'The Break of Dawn' WHERE album IN ('The Break of Dawn (Remastered)', 'The Break OF Dawn');
 
 /* Boyz II Men */
-UPDATE scrobbles SET album_text = 'Cooleyhighharmony' WHERE album_text = 'Cooleyhighharmony (Bonus Tracks Version)';
+UPDATE scrobbles SET album = 'Cooleyhighharmony' WHERE album = 'Cooleyhighharmony (Bonus Tracks Version)';
 
 /* Burna Boy */
-UPDATE scrobbles SET album_text = 'Redemption' WHERE artist_text = 'Burna Boy' AND name = 'Pree Me';
+UPDATE scrobbles SET album = 'Redemption' WHERE artist = 'Burna Boy' AND track = 'Pree Me';
 
 /* Calvin Harris */
-UPDATE scrobbles SET album_text = 'Funk Wav Bounces Vol.1' WHERE name = 'Slide' and album_text = 'Slide';
+UPDATE scrobbles SET album = 'Funk Wav Bounces Vol.1' WHERE track = 'Slide' and album = 'Slide';
 
 /* Childish Gambino */
-UPDATE scrobbles SET album_text = 'Kauai' WHERE album_text = 'Kauai EP';
-UPDATE scrobbles SET album_text = '"Awaken, My Love!"' WHERE album_text IN ('Redbone', 'Me and Your Mama');
+UPDATE scrobbles SET album = 'Kauai' WHERE album = 'Kauai EP';
+UPDATE scrobbles SET album = '"Awaken, My Love!"' WHERE album IN ('Redbone', 'Me and Your Mama');
 
 /* Cole King */
-UPDATE scrobbles SET album_text = 'Melancholy Red' WHERE album_text = 'Nothin Changed (feat. Tunji Ige)';
+UPDATE scrobbles SET album = 'Melancholy Red' WHERE album = 'Nothin Changed (feat. Tunji Ige)';
 
 /* Common */
-UPDATE scrobbles SET album_text = 'Black America Again' WHERE artist_text = 'Common' AND album_text = 'Letter To The Free';
-UPDATE scrobbles SET album_text = 'Like Water for Chocolate' WHERE artist_text = 'Common' AND name = 'The Light';
+UPDATE scrobbles SET album = 'Black America Again' WHERE artist = 'Common' AND album = 'Letter To The Free';
+UPDATE scrobbles SET album = 'Like Water for Chocolate' WHERE artist = 'Common' AND track = 'The Light';
 
 /* Consequence */
-UPDATE scrobbles SET album_text = 'The Cons, Volume 5: Refuse to Die' WHERE artist_text = 'Consequence' AND name = 'Don''t Forget ''Em (Remix) [feat. Kanye West]';
+UPDATE scrobbles SET album = 'The Cons, Volume 5: Refuse to Die' WHERE artist = 'Consequence' AND track = 'Don''t Forget ''Em (Remix) [feat. Kanye West]';
 
 /* D.R.A.M. */
-UPDATE scrobbles SET album_text = 'Big Baby D.R.A.M.' WHERE album_text IN ('Cash Machine - Single', 'Gilligan (feat. A$AP Rocky & Juicy J)');
+UPDATE scrobbles SET album = 'Big Baby D.R.A.M.' WHERE album IN ('Cash Machine - Single', 'Gilligan (feat. A$AP Rocky & Juicy J)');
 
 /* Daniel Caesar */
-UPDATE scrobbles SET album_text = 'Freudian' WHERE artist_text = 'Daniel Caesar' AND album_text LIKE 'Get You%';
+UPDATE scrobbles SET album = 'Freudian' WHERE artist = 'Daniel Caesar' AND album LIKE 'Get You%';
 
 /* Denzel Curry */
-UPDATE scrobbles SET album_text = '32 Zel / Planet Shrooms' WHERE artist_text = 'Denzel Curry' AND name = 'Ultimate';
+UPDATE scrobbles SET album = '32 Zel / Planet Shrooms' WHERE artist = 'Denzel Curry' AND track = 'Ultimate';
 
 /* Desiigner */
-UPDATE scrobbles SET album_text = 'New English' WHERE name IN ('Tiimmy Turner', 'Panda') AND artist_text = 'Desiigner';
+UPDATE scrobbles SET album = 'New English' WHERE track IN ('Tiimmy Turner', 'Panda') AND artist = 'Desiigner';
 
 /* DJ Khaled */
-UPDATE scrobbles SET album_text = 'Victory' WHERE album_text = 'All I Do Is Win (feat. T-Pain, Ludacris, Snoop Dogg & Rick Ross)';
-UPDATE scrobbles SET album_text = 'Grateful' WHERE artist_text = 'DJ Khaled' AND album_text = 'I''m the One';
+UPDATE scrobbles SET album = 'Victory' WHERE album = 'All I Do Is Win (feat. T-Pain, Ludacris, Snoop Dogg & Rick Ross)';
+UPDATE scrobbles SET album = 'Grateful' WHERE artist = 'DJ Khaled' AND album = 'I''m the One';
 
 /* DMX */
-UPDATE scrobbles SET album_text = 'Grand Champ' WHERE name = 'Where The Hood At';
-UPDATE scrobbles SET album_text = 'Cradle 2 the Grave' WHERE artist_text = 'DMX' AND name = 'X Gon'' Give It To Ya';
+UPDATE scrobbles SET album = 'Grand Champ' WHERE track = 'Where The Hood At';
+UPDATE scrobbles SET album = 'Cradle 2 the Grave' WHERE artist = 'DMX' AND track = 'X Gon'' Give It To Ya';
 
 /* Drake */
-UPDATE scrobbles SET album_text = 'More Than a Game' WHERE album_text = 'More Than A Game';
-UPDATE scrobbles SET album_text = 'Nothing Was the Same' WHERE album_text = 'Nothing Was The Same (Deluxe)';
-UPDATE scrobbles SET album_text = 'So Far Gone' WHERE artist_text = 'Drake' AND name = 'Best I Ever Had';
+UPDATE scrobbles SET album = 'More Than a Game' WHERE album = 'More Than A Game';
+UPDATE scrobbles SET album = 'Nothing Was the Same' WHERE album = 'Nothing Was The Same (Deluxe)';
+UPDATE scrobbles SET album = 'So Far Gone' WHERE artist = 'Drake' AND track = 'Best I Ever Had';
 
 /* EarthGang */
-UPDATE scrobbles SET album_text = 'Take Care (Deluxe)' WHERE album_text = 'Take Care (Explicit Deluxe)';
-UPDATE scrobbles SET album_text = 'Robots - EP' WHERE artist_text = 'EarthGang' AND name IN ('Flickted', 'So Many Feelings', 'Underwater (feat. Sir)', 'Robots', 'Artificial', 'Lyfted Intro');
-UPDATE scrobbles SET album_text = 'Curtain Call (Deluxe)' WHERE album_text = 'Curtain Call (Deluxe Explicit)';
+UPDATE scrobbles SET album = 'Take Care (Deluxe)' WHERE album = 'Take Care (Explicit Deluxe)';
+UPDATE scrobbles SET album = 'Robots - EP' WHERE artist = 'EarthGang' AND track IN ('Flickted', 'So Many Feelings', 'Underwater (feat. Sir)', 'Robots', 'Artificial', 'Lyfted Intro');
 
 /* Earl Sweatshirt */
-UPDATE scrobbles SET album_text = 'Doris' WHERE artist_text = 'Earl Sweatshirt' AND name = 'Hive';
+UPDATE scrobbles SET album = 'Doris' WHERE artist = 'Earl Sweatshirt' AND track = 'Hive';
+
+/* Eminem */
+UPDATE scrobbles SET album = 'Curtain Call (Deluxe)' WHERE album = 'Curtain Call (Deluxe Explicit)';
 
 /* Fetty Wap */
-UPDATE scrobbles SET album_text = 'Fetty Wap (Deluxe)' WHERE album_text = '679 (feat. Remy Boyz)';
+UPDATE scrobbles SET album = 'Fetty Wap (Deluxe)' WHERE album = '679 (feat. Remy Boyz)';
 
 /* Flying Lotus */
-UPDATE scrobbles SET album_text = 'You''re Dead!' WHERE album_text = 'You''re Dead! (Deluxe)';
-UPDATE scrobbles SET name = 'Never Catch Me', album_text = 'You''re Dead!' WHERE name = 'Never Catch Me (feat. Kendrick Lamar)';
+UPDATE scrobbles SET album = 'You''re Dead!' WHERE album = 'You''re Dead! (Deluxe)';
+UPDATE scrobbles SET track = 'Never Catch Me', album = 'You''re Dead!' WHERE track = 'Never Catch Me (feat. Kendrick Lamar)';
 
 /* Fort Minor */
-UPDATE scrobbles SET name = 'Remember the Name', album_text = 'Petrified/Remember The Name' WHERE name = 'Remember the Name (feat. Styles of Beyond)';
+UPDATE scrobbles SET track = 'Remember the track', album = 'Petrified/Remember The track' WHERE track = 'Remember the track (feat. Styles of Beyond)';
 
 /* Frank Ocean */
-UPDATE scrobbles SET name = 'Nights' WHERE artist_text = 'Frank Ocean' AND name = 'nights';
-UPDATE scrobbles SET name = 'Close to You' WHERE artist_text = 'Frank Ocean' AND name = 'close to you';
-UPDATE scrobbles SET name = 'Self Control' WHERE artist_text = 'Frank Ocean' AND name = 'self control';
-UPDATE scrobbles SET name = 'Solo (Reprise)' WHERE artist_text = 'Frank Ocean' AND name = 'solo (reprise)';
-UPDATE scrobbles SET name = 'Close to You' WHERE artist_text = 'Frank Ocean' AND name = 'close to you';
+UPDATE scrobbles SET track = 'Nights' WHERE artist = 'Frank Ocean' AND track = 'nights';
+UPDATE scrobbles SET track = 'Close to You' WHERE artist = 'Frank Ocean' AND track = 'close to you';
+UPDATE scrobbles SET track = 'Self Control' WHERE artist = 'Frank Ocean' AND track = 'self control';
+UPDATE scrobbles SET track = 'Solo (Reprise)' WHERE artist = 'Frank Ocean' AND track = 'solo (reprise)';
+UPDATE scrobbles SET track = 'Close to You' WHERE artist = 'Frank Ocean' AND track = 'close to you';
 
 /* Gil-Scott Heron */
-UPDATE scrobbles SET album_text = 'Pieces of a Man' WHERE name = 'The Revolution Will Not Be Televised';
+UPDATE scrobbles SET album = 'Pieces of a Man' WHERE track = 'The Revolution Will Not Be Televised';
 
 /* Ginuwine */
-UPDATE scrobbles SET album_text = 'Ginuwine...the Bachelor' WHERE artist_text = 'Ginuwine' AND name = 'Pony';
+UPDATE scrobbles SET album = 'Ginuwine...the Bachelor' WHERE artist = 'Ginuwine' AND track = 'Pony';
 
 /* GoldLink */
-UPDATE scrobbles SET album_text = 'At What Cost' WHERE artist_text = 'GoldLink' AND album_text = 'Crew';
+UPDATE scrobbles SET album = 'At What Cost' WHERE artist = 'GoldLink' AND album = 'Crew';
 
 /* Goodie Mob */
-UPDATE scrobbles SET album_text = 'Soul Food' WHERE artist_text = 'Goodie Mob' AND name = 'Cell Therapy';
+UPDATE scrobbles SET album = 'Soul Food' WHERE artist = 'Goodie Mob' AND track = 'Cell Therapy';
 
 /* Gucci Mane */
-UPDATE scrobbles SET album_text = 'Mr. Davis' WHERE album_text = 'I Get The Bag (feat. Migos)';
+UPDATE scrobbles SET album = 'Mr. Davis' WHERE album = 'I Get The Bag (feat. Migos)';
+
+/* GZA */
+UPDATE scrobbles SET artist = 'GZA' WHERE artist = 'GZA/Genius';
 
 /* Jalen Santoy */
-UPDATE scrobbles SET album_text = 'Charlie Eastern' WHERE artist_text = 'Jalen Santoy' AND name = 'Foreplay';
+UPDATE scrobbles SET album = 'Charlie Eastern' WHERE artist = 'Jalen Santoy' AND track = 'Foreplay';
 
 /* Jay IDK */
-UPDATE scrobbles SET artist_text = 'Jay IDK' WHERE artist_text = 'Jay idk';
+UPDATE scrobbles SET artist = 'Jay IDK' WHERE artist = 'Jay idk';
 
 /* Jeezy */
-UPDATE scrobbles SET album_text = 'Trap or Die 3' WHERE artist_text = 'Jeezy' AND name = 'Goldmine';
+UPDATE scrobbles SET album = 'Trap or Die 3' WHERE artist = 'Jeezy' AND track = 'Goldmine';
 
 /* Jidenna */
-UPDATE scrobbles SET album_text = 'The Chief' WHERE artist_text = 'Jidenna' AND name = 'Classic Man';
+UPDATE scrobbles SET album = 'The Chief' WHERE artist = 'Jidenna' AND track = 'Classic Man';
 
 /* Joey Bada$$ */
-UPDATE scrobbles SET album_text = 'ALL-AMERIKKKAN BADA$$' WHERE artist_text = 'Joey Bada$$' AND album_text = 'Devastated';
+UPDATE scrobbles SET album = 'ALL-AMERIKKKAN BADA$$' WHERE artist = 'Joey Bada$$' AND album = 'Devastated';
 
 /* Joey Purp */
-UPDATE scrobbles SET album_text = 'iiiDrops' WHERE album_text = 'Girls @ (feat. Chance the Rapper)';
+UPDATE scrobbles SET album = 'iiiDrops' WHERE album = 'Girls @ (feat. Chance the Rapper)';
 
 /* Kamaiyah */
-UPDATE scrobbles SET album_text = 'A GOOD NIGHT IN THE GHETTO' WHERE album_text = 'How Does It Feel';
+UPDATE scrobbles SET album = 'A GOOD NIGHT IN THE GHETTO' WHERE album = 'How Does It Feel';
 
 /* KAYTRANADA */
-UPDATE scrobbles SET album_text = '99.9%' WHERE album_text = 'GLOWED UP';
-UPDATE scrobbles SET artist_text = 'KAYTRANADA' WHERE artist_text = 'Kaytranada';
+UPDATE scrobbles SET album = '99.9%' WHERE album = 'GLOWED UP';
+UPDATE scrobbles SET artist = 'KAYTRANADA' WHERE artist = 'Kaytranada';
 
 /* Kevin Abstract */
-UPDATE scrobbles SET album_text = 'American Boyfriend: A Suburban Love Story' WHERE artist_text = 'Kevin Abstract' AND album_text = 'Empty - Single';
+UPDATE scrobbles SET album = 'American Boyfriend: A Suburban Love Story' WHERE artist = 'Kevin Abstract' AND album = 'Empty - Single';
 
 /* Khalid */
-UPDATE scrobbles SET album_text = 'American Teen' WHERE album_text IN ('Location', 'Let''s Go');
+UPDATE scrobbles SET album = 'American Teen' WHERE album IN ('Location', 'Let''s Go');
 
 /* Lil Uzi Vert */
-UPDATE scrobbles SET album_text = 'Luv Is Rage 2' WHERE album_text = 'XO TOUR Llif3';
+UPDATE scrobbles SET album = 'Luv Is Rage 2' WHERE album = 'XO TOUR Llif3';
 
 /* Lil Wayne */
-UPDATE scrobbles SET album_text = 'Tha Carter IV (Deluxe)' WHERE album_text IN ('Tha Carter IV (Explicit Deluxe Version)', 'Tha Carter IV (Edited Deluxe Version)');
-UPDATE scrobbles SET album_text = 'I Am Not A Human Being' WHERE album_text = 'I Am Not a Human Being';
+UPDATE scrobbles SET album = 'Tha Carter IV (Deluxe)' WHERE album IN ('Tha Carter IV (Explicit Deluxe Version)', 'Tha Carter IV (Edited Deluxe Version)');
+UPDATE scrobbles SET album = 'I Am Not A Human Being' WHERE album = 'I Am Not a Human Being';
+UPDATE scrobbles SET album = 'Dedication 6: Reloaded' WHERE track = 'Family Feud';
 
 /* Lorde */
-UPDATE scrobbles SET name = 'Flicker (Kanye West Rework)', album_text = 'Flicker (Kanye West Rework)' WHERE artist_text = 'Lorde' AND name LIKE 'Flicker%';
+UPDATE scrobbles SET track = 'Flicker (Kanye West Rework)', album = 'Flicker (Kanye West Rework)' WHERE artist = 'Lorde' AND track LIKE 'Flicker%';
 
 /* Kanye West */
-UPDATE scrobbles SET name = 'I''ll Fly Away' WHERE name = 'I''ll Fly Away - Album Version (Edited)';
-UPDATE scrobbles SET name = 'Two Words' WHERE name = 'Two Words - Album Version (Edited)';
-UPDATE scrobbles SET artist_text = 'Kanye West' WHERE name = 'Slow Jamz';
-UPDATE scrobbles SET name = 'Blame Game' WHERE name = 'Blame Game (feat. John Legend)';
-UPDATE scrobbles SET name = 'Devil In A New Dress' WHERE name = 'Devil in a New Dress (feat. Rick Ross)';
-UPDATE scrobbles SET name = 'Lost In The World' WHERE name = 'Lost in the World (feat. Bon Iver)';
-UPDATE scrobbles SET name = 'Runaway' WHERE name = 'Runaway (feat. Pusha T)';
+UPDATE scrobbles SET track = 'I''ll Fly Away' WHERE track = 'I''ll Fly Away - Album Version (Edited)';
+UPDATE scrobbles SET track = 'Two Words' WHERE track = 'Two Words - Album Version (Edited)';
+UPDATE scrobbles SET artist = 'Kanye West' WHERE track = 'Slow Jamz';
+UPDATE scrobbles SET track = 'Blame Game' WHERE track = 'Blame Game (feat. John Legend)';
+UPDATE scrobbles SET track = 'Devil In A New Dress' WHERE track = 'Devil in a New Dress (feat. Rick Ross)';
+UPDATE scrobbles SET track = 'Lost In The World' WHERE track = 'Lost in the World (feat. Bon Iver)';
+UPDATE scrobbles SET track = 'Runaway' WHERE track = 'Runaway (feat. Pusha T)';
 
 /* Kendrick Lamar */
-UPDATE scrobbles SET album_text = 'good kid, m.A.A.d city (Deluxe)' WHERE album_text = 'good kid, m.A.A.d city';
-UPDATE scrobbles SET album_text = 'good kid, m.A.A.d city (Deluxe)' WHERE album_text = 'Swimming Pools (Drank)';
-UPDATE scrobbles SET album_text = 'DAMN.' WHERE artist_text = 'Kendrick Lamar' AND album_text = 'HUMBLE.';
+UPDATE scrobbles SET album = 'good kid, m.A.A.d city (Deluxe)' WHERE album IN ('good kid, m.A.A.d city', 'Swimming Pools (Drank)');
+UPDATE scrobbles SET album = 'DAMN.' WHERE artist = 'Kendrick Lamar' AND album = 'HUMBLE.';
 
 /* Kid CuDi */
-UPDATE scrobbles SET album_text = 'Man on the Moon II: The Legend of Mr. Rager' WHERE album_text = 'Man On The Moon II: The Legend Of Mr. Rager';
-UPDATE scrobbles SET album_text = 'Man On The Moon: The End Of Day (Deluxe)' WHERE album_text = 'Man On The Moon: The End Of Day (Deluxe Explicit Version)';
+UPDATE scrobbles SET album = 'Man on the Moon II: The Legend of Mr. Rager' WHERE album = 'Man On The Moon II: The Legend Of Mr. Rager';
+UPDATE scrobbles SET album = 'Man On The Moon: The End Of Day (Deluxe)' WHERE album = 'Man On The Moon: The End Of Day (Deluxe Explicit Version)';
 
 /* Marvin Gaye */
-UPDATE scrobbles SET name = 'I Heard It Through the Grapevine', album_text = 'The Big Chill' WHERE name = 'I Heard It Through The Grapevine - Single Version (Mono)';
+UPDATE scrobbles SET track = 'I Heard It Through the Grapevine', album = 'The Big Chill' WHERE track = 'I Heard It Through The Grapevine - Single Version (Mono)';
 
 /* Masego */
-UPDATE scrobbles SET artist_text = 'Masego' WHERE artist_text = 'masego';
+UPDATE scrobbles SET artist = 'Masego' WHERE artist = 'masego';
 
 /* Mura Masa */
-UPDATE scrobbles SET name = 'Love$ick (feat. A$AP Rocky)' WHERE artist_text = 'Mura Masa' AND name = 'Love$ick';
-UPDATE scrobbles SET album_text = 'MURA MASA' WHERE artist_text = 'Mura Masa' AND name IN ('Love$ick (feat. A$AP Rocky)', '1 Night');
+UPDATE scrobbles SET track = 'Love$ick (feat. A$AP Rocky)' WHERE artist = 'Mura Masa' AND track = 'Love$ick';
+UPDATE scrobbles SET album = 'MURA MASA' WHERE artist = 'Mura Masa' AND track IN ('Love$ick (feat. A$AP Rocky)', '1 Night');
 
 /* Muse */
-UPDATE scrobbles SET album_text = 'Black Holes and Revelations' WHERE album_text = 'Black Holes And Revelations (Updated 09 version)';
-UPDATE scrobbles SET album_text = 'Origin of Symmetry' WHERE album_text = 'Origin Of Symmetry (New 09 Version)';
+UPDATE scrobbles SET album = 'Black Holes and Revelations' WHERE album = 'Black Holes And Revelations (Updated 09 version)';
+UPDATE scrobbles SET album = 'Origin of Symmetry' WHERE album = 'Origin Of Symmetry (New 09 Version)';
 
 /* Nas */
-UPDATE scrobbles SET album_text = 'Illmatic' WHERE album_text = 'Illmatic XX';
+UPDATE scrobbles SET album = 'Illmatic' WHERE album = 'Illmatic XX';
 
-/* Noname */
-UPDATE scrobbles SET artist_text = 'Noname' WHERE artist_text = 'NoName';
+/* Notrack */
+UPDATE scrobbles SET artist = 'Notrack' WHERE artist = 'Notrack';
 
 /* NxWorries */
-UPDATE scrobbles SET album_text = 'Yes Lawd!' WHERE album_text IN ('Get Bigger / Do U Luv', 'Lyk Dis');
+UPDATE scrobbles SET album = 'Yes Lawd!' WHERE album IN ('Get Bigger / Do U Luv', 'Lyk Dis');
 
 /* Otis Redding */
-UPDATE scrobbles SET album_text = 'Pain in My Heart' WHERE album_text IN ('Pain In My Heart (US Release)', 'Pain In My Heart');
-UPDATE scrobbles SET album_text = 'Otis Blue' WHERE artist_text = 'Otis Redding' AND album_text LIKE 'Otis Blue%';
-UPDATE scrobbles SET name = 'My Girl' WHERE name = 'My Girl - Remastered Mono' AND album_text = 'Otis Blue';
+UPDATE scrobbles SET album = 'Pain in My Heart' WHERE album IN ('Pain In My Heart (US Release)', 'Pain In My Heart');
+UPDATE scrobbles SET album = 'Otis Blue' WHERE artist = 'Otis Redding' AND album LIKE 'Otis Blue%';
+UPDATE scrobbles SET track = 'My Girl' WHERE track = 'My Girl - Remastered Mono' AND album = 'Otis Blue';
 
 /* Post Malone */
-UPDATE scrobbles SET album_text = 'Stoney (Deluxe)' WHERE album_text = 'Deja Vu' AND artist_text = 'Post Malone';
+UPDATE scrobbles SET album = 'Stoney (Deluxe)' WHERE album = 'Deja Vu' AND artist = 'Post Malone';
 
 /* Rapsody */
-UPDATE scrobbles SET album_text = 'Beauty And The Beast (Deluxe Edition)' WHERE album_text = 'Beauty And The Beast - EP';
+UPDATE scrobbles SET album = 'Beauty And The Beast (Deluxe Edition)' WHERE album = 'Beauty And The Beast - EP';
 
 /* Russ */
-UPDATE scrobbles SET album_text = 'There''s Really A Wolf' WHERE album_text = 'What They Want';
+UPDATE scrobbles SET album = 'There''s Really A Wolf' WHERE album = 'What They Want';
 
 /* Sam Cooke */
-UPDATE scrobbles SET album_text = 'Mr. Soul' WHERE name = 'Nothing Can Change This Love';
+UPDATE scrobbles SET album = 'Mr. Soul' WHERE track = 'Nothing Can Change This Love';
 
 /* Scarface */
-UPDATE scrobbles SET album_text = 'The Fix' WHERE artist_text = 'Scarface' AND name = 'On My Block';
+UPDATE scrobbles SET album = 'The Fix' WHERE artist = 'Scarface' AND track = 'On My Block';
 
 /* ScHoolboy Q */
-UPDATE scrobbles SET album_text = 'Setbacks' WHERE album_text = 'SetBacks';
+UPDATE scrobbles SET album = 'Setbacks' WHERE album = 'SetBacks';
+
+/* SiR */
+UPDATE scrobbles SET artist = 'SiR' WHERE artist = 'Sir';
+UPDATE scrobbles SET album = 'November' WHERE artist = 'SiR' AND album is NULL;
 
 /* Smino */
-UPDATE scrobbles SET album_text = 'blkswn' WHERE artist_text = 'Smino' AND album_text = 'Anita';
+UPDATE scrobbles SET album = 'blkswn' WHERE artist = 'Smino' AND album = 'Anita';
 
 /* Snakehips */
-UPDATE scrobbles SET album_text = 'All My Friends - EP' WHERE album_text = 'All My Friends';
+UPDATE scrobbles SET album = 'All My Friends - EP' WHERE album = 'All My Friends';
 
 /* SZA */
-UPDATE scrobbles SET album_text = 'CTRL' WHERE artist_text = 'SZA' AND album_text = 'Love Galore';
+UPDATE scrobbles SET album = 'CTRL' WHERE artist = 'SZA' AND album = 'Love Galore';
 
 /* Tech N9ne */
-UPDATE scrobbles SET artist_text = 'Tech N9ne' WHERE artist_text = 'Tech N9ne feat.%';
+UPDATE scrobbles SET artist = 'Tech N9ne' WHERE artist = 'Tech N9ne feat.%';
 
 /* theMIND */
-UPDATE scrobbles SET artist_text = 'theMIND' WHERE artist_text = 'themind';
-UPDATE scrobbles SET album_text = 'Summer Camp' WHERE artist_text = 'theMIND' AND name = 'Pale Rose';
+UPDATE scrobbles SET artist = 'theMIND' WHERE artist = 'themind';
+UPDATE scrobbles SET album = 'Summer Camp' WHERE artist = 'theMIND' AND track = 'Pale Rose';
 
 /* The O'My's */
-UPDATE scrobbles SET artist_text = 'The O''My''s' WHERE artist_text = 'The O''my''s';
+UPDATE scrobbles SET artist = 'The O''My''s' WHERE artist = 'The O''my''s';
 
 /* Topaz Jones */
-UPDATE scrobbles SET name = 'Powerball', album_text = 'Arcade' WHERE artist_text = 'Topaz Jones' AND name = 'Powerball';
+UPDATE scrobbles SET track = 'Powerball', album = 'Arcade' WHERE artist = 'Topaz Jones' AND track = 'Powerball';
 
 /* UGK */
-UPDATE scrobbles SET album_text = 'Underground Kingz' WHERE name = 'Int''l Players Anthem (I Choose You)';
-UPDATE scrobbles SET album_text = 'Super Tight' WHERE artist_text = 'UGK' AND name = 'Front, Back & Side to Side';
+UPDATE scrobbles SET album = 'Underground Kingz' WHERE track = 'Int''l Players Anthem (I Choose You)';
+UPDATE scrobbles SET album = 'Super Tight' WHERE artist = 'UGK' AND track = 'Front, Back & Side to Side';
 
 /* Vince Staples */
-UPDATE scrobbles SET album_text = 'Big Fish Theory' WHERE album_text = 'Big Fish';
+UPDATE scrobbles SET album = 'Big Fish Theory' WHERE album = 'Big Fish';
 
 /* XXXTentacion */
-UPDATE scrobbles SET artist_text = 'XXXTentacion' WHERE artist_text = 'xxxtentacion';
+UPDATE scrobbles SET artist = 'XXXTentacion' WHERE artist = 'xxxtentacion';
 
 /* YG */
-UPDATE scrobbles SET album_text = 'My Krazy Life' WHERE artist_text = 'YG' AND album_text = 'My Krazy Life (Deluxe)';
+UPDATE scrobbles SET album = 'My Krazy Life' WHERE artist = 'YG' AND album = 'My Krazy Life (Deluxe)';
 
 /* YGTUT */
-UPDATE scrobbles SET artist_text = 'YGTUT' WHERE artist_text = 'ygtut';
+UPDATE scrobbles SET artist = 'YGTUT' WHERE artist = 'ygtut';
 
 /* Young Thug */
-UPDATE scrobbles SET name = 'Pick Up the Phone (feat. Quavo)', album_text = 'Jeffery' WHERE name LIKE 'Pick Up the Phone%';
-UPDATE scrobbles SET album_text = 'Jeffery' WHERE artist_text = 'Young Thug' AND album_text = 'No, My Name is JEFFERY';
+UPDATE scrobbles SET track = 'Pick Up the Phone (feat. Quavo)', album = 'Jeffery' WHERE track LIKE 'Pick Up the Phone%';
+UPDATE scrobbles SET album = 'Jeffery' WHERE artist = 'Young Thug' AND album = 'No, My track is JEFFERY';
 
 /* SQL query for scrobbles per album */
-SELECT artist_text, album_text, COUNT(*) FROM scrobbles GROUP BY album_text HAVING COUNT(*) > 0 ORDER BY artist_text, album_text, COUNT(*) DESC
+SELECT artist, album, COUNT(*) FROM scrobbles GROUP BY album HAVING COUNT(*) > 0 ORDER BY artist, album, COUNT(*) DESC

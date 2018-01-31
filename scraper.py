@@ -55,13 +55,18 @@ def process_scrobble(scrobble):
 	del flattened['artist_mbid']
 	del flattened['album_mbid']
 
+	flattened['artist'] = flattened.pop('artist_text')
+	flattened['track'] = flattened.pop('name')
+	flattened['album'] = flattened.pop('album_text')
+
 	if 'date_uts' in flattened:
-		flattened['date_uts'] = int(flattened['date_uts'])
-		dt = datetime.fromtimestamp(flattened['date_uts'])
-		flattened['date_year'] = dt.year
-		flattened['date_month'] = dt.month
-		flattened['date_date'] = dt.day
-		flattened['date_hour'] = dt.hour
+		flattened['timestamp'] = int(flattened.pop('date_uts'))
+		flattened['timestamp_text'] = flattened.pop('date_text')
+		dt = datetime.fromtimestamp(flattened['timestamp'])
+		flattened['play_year'] = dt.year
+		flattened['play_month'] = dt.month
+		flattened['play_date'] = dt.day
+		flattened['play_hour'] = dt.hour
 	else:
 		flattened = None
 	return flattened
@@ -70,7 +75,7 @@ def process_scrobble(scrobble):
 def process_artist(artist):
 
 	# removes unnecessary attributes
-	props = ['ontour', 'image', 'streamable', 'url', 'bio']
+	props = ['ontour', 'image', 'streamable', 'url', 'bio', 'mbid']
 	artist = clean(artist, props)
 
 	# compresses related artists to a single value
@@ -109,6 +114,7 @@ def process_artist(artist):
 	return flattened
 
 def scrobbles():
+
 	# gets total num of pages in last.fm user history
 	resp = requests.get(RECENT_URL % (1, PER_PAGE)).json()
 	try:
@@ -133,21 +139,22 @@ def scrobbles():
 				db['scrobbles'].insert(processed)
 
 def artists():
+
 	# grabs and inserts info for all distinct scrobbled artists
 	with dataset.connect('sqlite:///last-fm.db') as db:
 		errors = []
-		result = db['scrobbles'].distinct('artist_text')
-		sql = 'SELECT COUNT(DISTINCT artist_text) AS count FROM scrobbles'
+		result = db['scrobbles'].distinct('artist')
+		sql = 'SELECT COUNT(DISTINCT artist) AS count FROM scrobbles'
 		totalArtists = int(db.query(sql).next()['count'])
 		for index, row in enumerate(result):
-			artist = requests.get(ARTIST_URL % row['artist_text']).json()
+			artist = requests.get(ARTIST_URL % row['artist']).json()
 			sys.stdout.write("\rRetrieving artist info...\t%s of %s" % (str(index), str(totalArtists)))
 			sys.stdout.flush()
 			try:
 				processed = process_artist(artist['artist'])
 				db['artists'].insert(processed)
 			except KeyError:
-				errors.append(row['artist_text'])
+				errors.append(row['artist'])
 		sys.stdout.write("\rRetrieving artist info...\t{0} of {0}".format(str(totalArtists)))
 		sys.stdout.flush()
 		print("\rRetrieved artist info.")
@@ -156,6 +163,10 @@ def artists():
 
 if __name__ == "__main__":
 	scrobbles()
+	sys.stdout.write("\rProcessing scrobble history...")
 	scrubber.renvariant()
 	scrubber.dotslash()
+	sys.stdout.flush()
+	sys.stdout.write("\rProcessed scrobble history.")
+	sys.stdout.flush()
 	artists()
