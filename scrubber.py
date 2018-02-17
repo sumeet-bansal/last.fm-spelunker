@@ -11,7 +11,7 @@ def renvariant():
 		# gets all distinct albums in database
 		sql = 'SELECT DISTINCT album FROM scrobbles'
 		result = db.query(sql)
-		albums = [str(row['album']) for row in result]
+		albums = [str(row['album']).replace("'", "\\'") for row in result]
 
 		# variations to screen for
 		versions = [' (Explicit)', ' (Explicit Version)', ' (Edited)']
