@@ -35,6 +35,18 @@ def process(metric):
 		else:
 			streams[artist][elapsed] = row['count(%s)' % metric]
 
+	if len(sys.argv) > 2 and sys.argv[2] == '--other':
+		sql = 'SELECT COUNT(*) AS count, timestamp FROM scrobbles WHERE {0} NOT IN {1} GROUP BY play_year, play_month'.format(metric, artists)
+		result = db.query(sql)
+		streams['other'] = [0 for i in range(timeframe)]
+		for row in result:
+			current = datetime.fromtimestamp(int(row['timestamp']))
+			elapsed = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=current)])
+			if streams['other'][elapsed - 1] == 0:
+				streams['other'][elapsed - 1] = row['count']
+			elif elapsed != len(streams):
+				streams['other'][elapsed] = row['count']
+
 	with open('stream-data.csv', 'w') as csv:
 		csv.write('key,value,date\n')
 		for i in range(timeframe):
