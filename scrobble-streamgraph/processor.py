@@ -8,11 +8,11 @@ def process(metric):
 	# gets all artists and their respective daily play counts
 	db = dataset.connect('sqlite:///../last-fm.db')
 	total = db['scrobbles'].count()
-	timeframe = db.query('SELECT MIN(date_uts), MAX(date_uts) FROM scrobbles').next()
-	mintime = datetime.fromtimestamp(timeframe['MIN(date_uts)'])
-	maxtime = datetime.fromtimestamp(timeframe['MAX(date_uts)'])
+	timeframe = db.query('SELECT MIN(timestamp), MAX(timestamp) FROM scrobbles').next()
+	mintime = datetime.fromtimestamp(timeframe['MIN(timestamp)'])
+	maxtime = datetime.fromtimestamp(timeframe['MAX(timestamp)'])
 	timeframe = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=maxtime)])
-	sql = 'SELECT DISTINCT {0} FROM scrobbles GROUP BY {0}, date_year, date_month HAVING count({0}) > {1}'.format(metric, stream_limit)
+	sql = 'SELECT DISTINCT {0} FROM scrobbles GROUP BY {0}, play_year, play_month HAVING count({0}) > {1}'.format(metric, stream_limit)
 	result = db.query(sql)
 
 	artists = []
@@ -20,7 +20,7 @@ def process(metric):
 		artists.append(row[metric])
 	artists = '(%s)' % str(artists)[1:-1]
 
-	sql = 'SELECT {0}, date_uts, count({0}) FROM scrobbles GROUP BY {0}, date_year, date_month HAVING {0} IN {1}'.format(metric, artists)
+	sql = 'SELECT {0}, timestamp, count({0}) FROM scrobbles GROUP BY {0}, play_year, play_month HAVING {0} IN {1}'.format(metric, artists)
 	result = db.query(sql)
 
 	streams = {}
@@ -28,7 +28,7 @@ def process(metric):
 		artist = row[metric]
 		if artist not in streams:
 			streams[artist] = [0 for i in range(timeframe)]
-		current = datetime.fromtimestamp(int(row['date_uts']))
+		current = datetime.fromtimestamp(int(row['timestamp']))
 		elapsed = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=current)])
 		if streams[artist][elapsed - 1] == 0:
 			streams[artist][elapsed - 1] = row['count(%s)' % metric]
@@ -58,5 +58,5 @@ if __name__ == "__main__":
 		print("[ERROR] Scrobble minimum must be an integer.")
 		quit()
 
-	metric = 'artist_text'
+	metric = 'artist'
 	process(metric)
