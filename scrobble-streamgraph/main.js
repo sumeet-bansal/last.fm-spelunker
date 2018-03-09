@@ -1,5 +1,6 @@
 chart("stream-data.csv", "blue");
 
+var minfyear = -1;
 var datearray = [];
 var colorrange = [];
 
@@ -66,6 +67,7 @@ function chart(csvpath, color) {
 	var graph = d3.csv(csvpath, function(data) {
 		data.forEach(function(d) {
 			d.date = format.parse(d.date);
+			minfyear = minfyear == -1 || d.date.getFullYear() < minfyear ? d.date.getFullYear() : minfyear;
 			d.value = +d.value;
 		});
 
@@ -105,29 +107,12 @@ function chart(csvpath, color) {
 				mousex = d3.mouse(this);
 				mousex = mousex[0];
 				var invertedx = x.invert(mousex);
-				// we'll use mouse position to look up date we're hovering above
-				// here we map mouse position on X axis to "day" index
-				// which is not really 1-365 but works without collisions
-				invertedx = ((invertedx.getMonth() + 1) * 31) + invertedx.getDate();
-				var selected = (d.values);
-				for (var k = 0; k < selected.length; k++) {
-					datearray[k] = selected[k].date
-					// "day" index of the date itself
-					datearray[k] = ((datearray[k].getMonth() + 1) * 31) + datearray[k].getDate();
-				}
-
-				// bug in the original code was here
-				// mousedate is often inaccurate & sometimes not in datearray (-1)
-				// if, for instance, there are dates with no entries in the data
-				mousedate = datearray.indexOf(invertedx);
-				// we find the nearest data point _less than_ our starting date
-				while (mousedate === -1) {
-					mousedate = datearray.indexOf(--invertedx)
-				}
-				quantity = d.values[mousedate].value
-				month = d.values[mousedate].date.toLocaleString("en-us", {month: "long"})
-				year = d.values[mousedate].date.getFullYear()
-				datestr = month + ' ' + year
+				var selected = d.values;
+				var xindex = invertedx.getMonth() + (12 * (invertedx.getFullYear()-minfyear));
+				quantity = selected[xindex].value;
+				month = selected[xindex].date.toLocaleString("en-us", {month: "long"});
+				year = selected[xindex].date.getFullYear();
+				datestr = month + ' ' + year;
 
 				d3.select(this)
 					.classed("hover", true)
