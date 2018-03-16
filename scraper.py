@@ -123,14 +123,12 @@ class Scraper:
 			quit()
 
 		# adds all scrobbles to a list
-		scrobbles = []
 		for page in range(1, TOTAL_PAGES + 1):
-			scrobbles.extend(requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track'])
+			scrobbles = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
 			sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(TOTAL_PAGES))
 			sys.stdout.flush()
+			self.insert_scrobbles(scrobbles)
 		print("\rRetrieved scrobble history.")
-
-		return scrobbles
 
 	def update_scrobbles(self):
 
@@ -146,19 +144,25 @@ class Scraper:
 			quit()
 
 		# adds all scrobbles to a list
-		scrobbles = []
+		count = 0
+		reached = False
 		for page in range(1, TOTAL_PAGES + 1):
 			current = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
 			if 'date' not in current[0]:
 				current = current[1:]
+			scrobbles = []
 			for play in current:
 				if int(play['date']['uts']) > rts:
 					scrobbles.append(play)
 				else:
-					print("\rUpdated scrobble history with %d new scrobbles since." % len(scrobbles))
-					return scrobbles
-			sys.stdout.write("\rUpdating scrobble history...\t%d scrobbles added" % len(scrobbles))
+					reached = True
+					break
+			self.insert_scrobbles(scrobbles)
+			count += len(scrobbles)
+			sys.stdout.write("\rUpdated scrobble history with %d new scrobbles." % count)
 			sys.stdout.flush()
+			if reached:
+				return
 
 	def insert_scrobbles(self, scrobbles):
 
@@ -168,7 +172,7 @@ class Scraper:
 				processed = self.process_scrobble(scrobble)
 				if processed is not None:
 					db[self.USER].insert(processed)
-					db['scrobbles'].insert(processed)	# temporary so everything doesn't fall apart
+#					db['scrobbles'].insert(processed)	# temporary so everything doesn't fall apart
 
 	def artists(self):
 
