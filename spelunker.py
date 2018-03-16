@@ -14,6 +14,18 @@ if __name__ == '__main__':
 		print("[ERROR] No last.fm username specified.")
 		quit()
 
+	try:
+		stream_limit = sys.argv[2]
+	except IndexError:
+		print("[ERROR] No scrobble minimum specified.")
+		quit()
+
+	try:
+		int(stream_limit)
+	except ValueError:
+		print("[ERROR] Scrobble minimum must be an integer.")
+		quit()
+
 	scr = scraper.Scraper(user)
 	with dataset.connect('sqlite:///last-fm.db') as db:
 		sql = 'SELECT COUNT(name) as count FROM sqlite_master WHERE type=\'table\' AND name=\'%s\'' % user
@@ -29,18 +41,11 @@ if __name__ == '__main__':
 	sys.stdout.flush()
 	sys.stdout.write("\rProcessed scrobble history.")
 	sys.stdout.flush()
+	print()
 
-	try:
-		stream_limit = sys.argv[2]
-	except IndexError:
-		print("[ERROR] No scrobble minimum specified.")
-		quit()
-
-	try:
-		int(stream_limit)
-	except ValueError:
-		print("[ERROR] Scrobble minimum must be an integer.")
-		quit()
-
+	sys.stdout.write("\rGenerating streamgraph data...")
+	sys.stdout.flush()
 	metric = 'artist'
 	processor.process(user, metric, stream_limit)
+	sys.stdout.write("\rGenerated streamgraph data.")
+	sys.stdout.flush()
