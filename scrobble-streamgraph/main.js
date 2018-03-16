@@ -1,10 +1,10 @@
-chart("stream-data.csv", "blue");
+streamgraph("stream-data.csv", "blue");
 
 var minfyear = -1;
 var datearray = [];
 var colorrange = [];
 
-function chart(csvpath, color) {
+function streamgraph(csvpath, color) {
 
 	if (color == "blue") {
 		colorrange = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6", "#F1EEF6"];
@@ -23,7 +23,7 @@ function chart(csvpath, color) {
 	var width = document.body.clientWidth - margin.left - margin.right;
 	var height = 450 - margin.top - margin.bottom;
 
-	var tooltip = d3.select(".chart")
+	var tooltip = d3.select(".streamgraph")
 		.append("div")
 		.attr("class", "tooltip")
 
@@ -58,7 +58,7 @@ function chart(csvpath, color) {
 		.y0(function(d) { return y(d.y0); })
 		.y1(function(d) { return y(d.y0 + d.y); });
 
-	var svg = d3.select(".chart").append("svg")
+	var svg = d3.select(".streamgraph").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
@@ -133,7 +133,7 @@ function chart(csvpath, color) {
 				tooltip.style("visibility", "hidden");
 			})
 
-		var vertical = d3.select(".chart")
+		var vertical = d3.select(".streamgraph")
 				.append("div")
 				.attr("class", "remove")
 				.style("position", "absolute")
@@ -146,7 +146,7 @@ function chart(csvpath, color) {
 				.style("left", "0px")
 				.style("background", "#fff");
 
-		d3.select(".chart")
+		d3.select(".streamgraph")
 			.on("mousemove", function() {
 				mousex = d3.mouse(this);
 				mousex = mousex[0] + 5;
