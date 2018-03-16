@@ -41,12 +41,15 @@ def rename_variants(username):
 			sql = 'UPDATE %s SET album = \'%s\' WHERE album = \'%s\'' % (username, album[:-len(standalone[album])], album)
 			db.query(sql)
 
+	print("Renamed variant album names for %s." % username)
+
 # applies SQL script
 def apply_SQL_script(sql_script):
 	with open(sql_script, 'r') as file:
 		with dataset.connect('sqlite:///last-fm.db') as db:
 			for command in file:
 				db.query(command)
+	print("Applied %s to the database." % sql_script)
 
 if __name__ == '__main__':
 
