@@ -133,7 +133,7 @@ class Scraper:
 	def update_scrobbles(self):
 
 		with dataset.connect('sqlite:///last-fm.db') as db:
-			rts = db.query('SELECT MAX(timestamp) as recent from scrobbles').next()['recent']
+			rts = db.query('SELECT MAX(timestamp) as recent from %s' % self.USER).next()['recent']
 
 		# gets total num of pages in last.fm user history
 		resp = requests.get(self.RECENT_URL % (1, self.PER_PAGE)).json()
@@ -196,25 +196,3 @@ class Scraper:
 			print("\rRetrieved artist info.")
 			if errors:
 				print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
-
-if __name__ == "__main__":
-
-	try:
-		user = sys.argv[1]
-	except IndexError:
-		print("[ERROR] No last.fm username specified.")
-		quit()
-
-	scr = Scraper(user)
-	with dataset.connect('sqlite:///last-fm.db') as db:
-		sql = 'SELECT COUNT(name) as count FROM sqlite_master WHERE type=\'table\' AND name=\'%s\'' % user
-		exists = int(db.query(sql).next()['count'])
-
-	scr.insert_scrobbles(scr.update_scrobbles() if exists else scr.get_all_scrobbles())
-
-	sys.stdout.write("\rProcessing scrobble history...")
-	scrubber.renvariant()
-	scrubber.dotslash()
-	sys.stdout.flush()
-	sys.stdout.write("\rProcessed scrobble history.")
-	sys.stdout.flush()
