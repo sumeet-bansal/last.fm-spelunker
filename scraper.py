@@ -10,6 +10,7 @@ import scrubber
 class Scraper:
 
 	def __init__(self, username):
+		self.USER = username
 		self.API_KEY = '2bf228a2ce0167b5b857dd53ea6f39c1'
 		self.ROOT_URL = 'https://ws.audioscrobbler.com/2.0/'
 		self.PER_PAGE = 200		# max allowed by last.fm
@@ -166,7 +167,8 @@ class Scraper:
 			for scrobble in reversed(scrobbles):
 				processed = self.process_scrobble(scrobble)
 				if processed is not None:
-					db['scrobbles'].insert(processed)
+					db[self.USER].insert(processed)
+					db['scrobbles'].insert(processed)	# temporary so everything doesn't fall apart
 
 	def artists(self):
 
