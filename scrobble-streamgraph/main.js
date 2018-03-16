@@ -1,7 +1,6 @@
 streamgraph("stream-data.csv", "blue");
 
-var minfyear = -1;
-var datearray = [];
+var minstamp = -1;
 var colorrange = [];
 
 function streamgraph(csvpath, color) {
@@ -67,7 +66,7 @@ function streamgraph(csvpath, color) {
 	var graph = d3.csv(csvpath, function(data) {
 		data.forEach(function(d) {
 			d.date = format.parse(d.date);
-			minfyear = minfyear == -1 || d.date.getFullYear() < minfyear ? d.date.getFullYear() : minfyear;
+			minstamp = minstamp == -1 || d.date.getTime() < minstamp ? d.date.getTime() : minstamp;
 			d.value = +d.value;
 		});
 
@@ -108,7 +107,8 @@ function streamgraph(csvpath, color) {
 				mousex = mousex[0];
 				var invertedx = x.invert(mousex);
 				var selected = d.values;
-				var xindex = invertedx.getMonth() + (12 * (invertedx.getFullYear()-minfyear));
+				var minmonth = new Date(minstamp);
+				var xindex = (invertedx.getMonth()-minmonth.getMonth()) + (12*(invertedx.getFullYear()-minmonth.getFullYear()));
 				quantity = selected[xindex].value;
 				month = selected[xindex].date.toLocaleString("en-us", {month: "long"});
 				year = selected[xindex].date.getFullYear();
