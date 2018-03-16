@@ -56,3 +56,26 @@ def process(username, metric, stream_limit):
 					csv.write('%s,%s,%s\n' % (artist.replace(',', ''), streams[artist][i], '%s/01/%s' % (current.month, str(current.year)[2:])))
 				except UnicodeEncodeError:
 					pass
+
+if __name__ == '__main__':
+
+	try:
+		user = sys.argv[1]
+	except IndexError:
+		print("[ERROR] No last.fm username specified.")
+		quit()
+
+	try:
+		stream_limit = sys.argv[2]
+	except IndexError:
+		print("[ERROR] No scrobble minimum specified.")
+		quit()
+
+	try:
+		int(stream_limit)
+	except ValueError:
+		print("[ERROR] Scrobble minimum must be an integer.")
+		quit()
+
+	metric = 'artist'
+	processor.process(user, metric, stream_limit)

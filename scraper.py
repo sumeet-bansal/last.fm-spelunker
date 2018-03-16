@@ -118,7 +118,7 @@ class Scraper:
 		try:
 			TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
 		except KeyError:
-			print("[ERROR] No last.fm username specified.")
+			print("[ERROR] Invalid last.fm username.")
 			quit()
 
 		# adds all scrobbles to a list
@@ -139,7 +139,7 @@ class Scraper:
 		try:
 			TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
 		except KeyError:
-			print("[ERROR] No last.fm username specified.")
+			print("[ERROR] Invalid last.fm username.")
 			quit()
 
 		# adds all scrobbles to a list
@@ -196,3 +196,20 @@ class Scraper:
 			print("\rRetrieved artist info.")
 			if errors:
 				print("\nThe following artists could not be located within the last.fm database: \n  " + "\n  ".join(errors))
+
+if __name__ == '__main__':
+
+	try:
+		user = sys.argv[1]
+	except IndexError:
+		print("[ERROR] No last.fm username specified.")
+		quit()
+
+	scr = Scraper(user)
+	with dataset.connect('sqlite:///last-fm.db') as db:
+		sql = 'SELECT COUNT(name) as count FROM sqlite_master WHERE type=\'table\' AND name=\'%s\'' % user
+		exists = int(db.query(sql).next()['count'])
+	if exists:
+		scr.update_scrobbles()
+	else:
+		scr.get_all_scrobbles()

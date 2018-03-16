@@ -47,3 +47,19 @@ def apply_SQL_script(sql_script):
 		with dataset.connect('sqlite:///last-fm.db') as db:
 			for command in file:
 				db.query(command)
+
+if __name__ == '__main__':
+
+	try:
+		user = sys.argv[1]
+	except IndexError:
+		print("[ERROR] No last.fm username specified.")
+		quit()
+
+	rename_variants(user)
+
+	try:
+		script = sys.argv[2]
+		apply_SQL_script(script)
+	except IndexError:
+		pass
