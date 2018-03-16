@@ -122,11 +122,11 @@ class Scraper:
 			quit()
 
 		# adds all scrobbles to a list
-		for page in range(1, TOTAL_PAGES + 1):
+		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
-			sys.stdout.write("\rRetrieving scrobble history...\t" + str(page) + " of " + str(TOTAL_PAGES))
+			sys.stdout.write("\rRetrieving scrobble history...\t%d of %d." % (TOTAL_PAGES - page + 1, TOTAL_PAGES))
 			sys.stdout.flush()
-			self.insert_scrobbles(scrobbles)
+			self.insert_scrobbles(reversed(scrobbles))
 		print("\rRetrieved scrobble history.")
 
 	def update_scrobbles(self):
@@ -135,44 +135,31 @@ class Scraper:
 			rts = db.query('SELECT MAX(timestamp) as recent from %s' % self.USER).next()['recent']
 
 		# gets total num of pages in last.fm user history
-		resp = requests.get(self.RECENT_URL % (1, self.PER_PAGE)).json()
+		UPDATE_URL = self.RECENT_URL + ('&from=%d' % (rts + 1))
+		resp = requests.get(UPDATE_URL % (1, self.PER_PAGE)).json()
 		try:
 			TOTAL_PAGES = int(resp['recenttracks']['@attr']['totalPages'])
 		except KeyError:
 			print("[ERROR] Invalid last.fm username.")
 			quit()
-
-		# adds all scrobbles to a list
 		count = 0
-		reached = False
-		for page in range(1, TOTAL_PAGES + 1):
-			current = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
-			if 'date' not in current[0]:
-				current = current[1:]
-			scrobbles = []
-			for play in current:
-				if int(play['date']['uts']) > rts:
-					scrobbles.append(play)
-				else:
-					reached = True
-					break
-			self.insert_scrobbles(scrobbles)
+		for page in reversed(range(1, TOTAL_PAGES + 1)):
+			scrobbles = requests.get(UPDATE_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
 			count += len(scrobbles)
 			sys.stdout.write("\rUpdated scrobble history with %d new scrobbles." % count)
 			sys.stdout.flush()
-			if reached:
-				print()
-				return
+			self.insert_scrobbles(reversed(scrobbles))
+		if count != 0:
+			print()
 
 	def insert_scrobbles(self, scrobbles):
 
 		# iterates through, processes, and inserts each scrobble
 		with dataset.connect('sqlite:///last-fm.db') as db:
-			for scrobble in reversed(scrobbles):
+			for scrobble in scrobbles:
 				processed = self.process_scrobble(scrobble)
 				if processed is not None:
 					db[self.USER].insert(processed)
-#					db['scrobbles'].insert(processed)	# temporary so everything doesn't fall apart
 
 	def artists(self):
 
