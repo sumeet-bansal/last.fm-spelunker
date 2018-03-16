@@ -124,7 +124,7 @@ class Scraper:
 		# adds all scrobbles to a list
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
-			sys.stdout.write("\rRetrieving scrobble history...\t%d of %d." % (TOTAL_PAGES - page + 1, TOTAL_PAGES))
+			sys.stdout.write("\rRetrieving scrobble history...\t%d of %d\tfor %s." % (TOTAL_PAGES - page + 1, TOTAL_PAGES, self.USER))
 			sys.stdout.flush()
 			self.insert_scrobbles(reversed(scrobbles))
 		print("\rRetrieved scrobble history.")
@@ -146,7 +146,7 @@ class Scraper:
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(UPDATE_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
 			inserted = self.insert_scrobbles(reversed(scrobbles))
-			sys.stdout.write("\rUpdated scrobble history with %d new scrobble(s)." % inserted)
+			sys.stdout.write("\rUpdated scrobble history with %d new scrobble(s) for %s." % (inserted, self.USER))
 			sys.stdout.flush()
 		if count != 0:
 			print()
@@ -190,17 +190,23 @@ class Scraper:
 
 if __name__ == '__main__':
 
-	try:
-		user = sys.argv[1]
-	except IndexError:
+	if len(sys.argv) == 1:
 		print("[ERROR] No last.fm username specified.")
 		quit()
 
-	scr = Scraper(user)
-	with dataset.connect('sqlite:///last-fm.db') as db:
-		sql = 'SELECT COUNT(name) as count FROM sqlite_master WHERE type=\'table\' AND name=\'%s\'' % user
-		exists = int(db.query(sql).next()['count'])
-	if exists:
-		scr.update_scrobbles()
+	if sys.argv[1] == '--all':
+		with dataset.connect('sqlite:///last-fm.db') as db:
+			sql = 'SELECT name as username FROM sqlite_master WHERE type=\'table\''
+			usernames = [row['username'] for row in db.query(sql)]
 	else:
-		scr.get_all_scrobbles()
+		usernames = sys.argv[1:]
+
+	for username in usernames:
+		scr = Scraper(username)
+		with dataset.connect('sqlite:///last-fm.db') as db:
+			sql = 'SELECT COUNT(name) as count FROM sqlite_master WHERE type=\'table\' AND name=\'%s\'' % username
+			exists = int(db.query(sql).next()['count'])
+		if exists:
+			scr.update_scrobbles()
+		else:
+			scr.get_all_scrobbles()
