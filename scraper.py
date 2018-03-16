@@ -145,14 +145,15 @@ class Scraper:
 		count = 0
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(UPDATE_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
-			count += len(scrobbles)
-			sys.stdout.write("\rUpdated scrobble history with %d new scrobbles." % count)
+			inserted = self.insert_scrobbles(reversed(scrobbles))
+			sys.stdout.write("\rUpdated scrobble history with %d new scrobble(s)." % inserted)
 			sys.stdout.flush()
-			self.insert_scrobbles(reversed(scrobbles))
 		if count != 0:
 			print()
 
 	def insert_scrobbles(self, scrobbles):
+
+		inserted = 0
 
 		# iterates through, processes, and inserts each scrobble
 		with dataset.connect('sqlite:///last-fm.db') as db:
@@ -160,6 +161,9 @@ class Scraper:
 				processed = self.process_scrobble(scrobble)
 				if processed is not None:
 					db[self.USER].insert(processed)
+					inserted += 1
+
+		return inserted
 
 	def artists(self):
 
