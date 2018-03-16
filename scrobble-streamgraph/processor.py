@@ -4,15 +4,15 @@ from datetime import datetime
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta
 
-def process(metric):
+def process(username, metric, stream_limit):
 	# gets all artists and their respective daily play counts
-	db = dataset.connect('sqlite:///../last-fm.db')
-	total = db['scrobbles'].count()
-	timeframe = db.query('SELECT MIN(timestamp), MAX(timestamp) FROM scrobbles').next()
+	db = dataset.connect('sqlite:///last-fm.db')
+	total = db[username].count()
+	timeframe = db.query('SELECT MIN(timestamp), MAX(timestamp) FROM %s' % username).next()
 	mintime = datetime.fromtimestamp(timeframe['MIN(timestamp)'])
 	maxtime = datetime.fromtimestamp(timeframe['MAX(timestamp)'])
 	timeframe = len([dt for dt in rrule(MONTHLY, dtstart=mintime, until=maxtime)])
-	sql = 'SELECT DISTINCT {0} FROM scrobbles GROUP BY {0}, play_year, play_month HAVING count({0}) > {1}'.format(metric, stream_limit)
+	sql = 'SELECT DISTINCT {0} FROM {1} GROUP BY {0}, play_year, play_month HAVING count({0}) > {2}'.format(metric, username, stream_limit)
 	result = db.query(sql)
 
 	artists = []
@@ -20,7 +20,7 @@ def process(metric):
 		artists.append(row[metric])
 	artists = '(%s)' % str(artists)[1:-1]
 
-	sql = 'SELECT {0}, timestamp, count({0}) FROM scrobbles GROUP BY {0}, play_year, play_month HAVING {0} IN {1}'.format(metric, artists)
+	sql = 'SELECT {0}, timestamp, count({0}) FROM {1} GROUP BY {0}, play_year, play_month HAVING {0} IN {2}'.format(metric, username, artists)
 	result = db.query(sql)
 
 	streams = {}
@@ -36,7 +36,7 @@ def process(metric):
 			streams[artist][elapsed] = row['count(%s)' % metric]
 
 	if len(sys.argv) > 2 and sys.argv[2] == '--other':
-		sql = 'SELECT COUNT(*) AS count, timestamp FROM scrobbles WHERE {0} NOT IN {1} GROUP BY play_year, play_month'.format(metric, artists)
+		sql = 'SELECT COUNT(*) AS count, timestamp FROM {0} WHERE {1} NOT IN {2} GROUP BY play_year, play_month'.format(username, metric, artists)
 		result = db.query(sql)
 		streams['other'] = [0 for i in range(timeframe)]
 		for row in result:
@@ -47,7 +47,7 @@ def process(metric):
 			elif elapsed != len(streams):
 				streams['other'][elapsed] = row['count']
 
-	with open('stream-data.csv', 'w') as csv:
+	with open('scrobble-streamgraph/stream-data.csv', 'w') as csv:
 		csv.write('key,value,date\n')
 		for i in range(timeframe):
 			current = mintime + relativedelta(months=i)
@@ -56,19 +56,3 @@ def process(metric):
 					csv.write('%s,%s,%s\n' % (artist.replace(',', ''), streams[artist][i], '%s/01/%s' % (current.month, str(current.year)[2:])))
 				except UnicodeEncodeError:
 					pass
-
-if __name__ == "__main__":
-	try:
-		stream_limit = sys.argv[1]
-	except IndexError:
-		print("[ERROR] No scrobble minimum specified.")
-		quit()
-
-	try:
-		int(stream_limit)
-	except ValueError:
-		print("[ERROR] Scrobble minimum must be an integer.")
-		quit()
-
-	metric = 'artist'
-	process(metric)

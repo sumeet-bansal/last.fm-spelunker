@@ -5,7 +5,6 @@ import sys
 import collections
 import dataset
 from datetime import datetime
-import scrubber
 
 class Scraper:
 
@@ -162,6 +161,7 @@ class Scraper:
 			sys.stdout.write("\rUpdated scrobble history with %d new scrobbles." % count)
 			sys.stdout.flush()
 			if reached:
+				print()
 				return
 
 	def insert_scrobbles(self, scrobbles):

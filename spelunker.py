@@ -22,3 +22,25 @@ if __name__ == '__main__':
 		scr.update_scrobbles()
 	else:
 		scr.get_all_scrobbles()
+
+	sys.stdout.write("\rProcessing scrobble history...")
+	scrubber.rename_variants(user)
+	scrubber.apply_SQL_script('scrubscript.sql')
+	sys.stdout.flush()
+	sys.stdout.write("\rProcessed scrobble history.")
+	sys.stdout.flush()
+
+	try:
+		stream_limit = sys.argv[2]
+	except IndexError:
+		print("[ERROR] No scrobble minimum specified.")
+		quit()
+
+	try:
+		int(stream_limit)
+	except ValueError:
+		print("[ERROR] Scrobble minimum must be an integer.")
+		quit()
+
+	metric = 'artist'
+	processor.process(user, metric, stream_limit)

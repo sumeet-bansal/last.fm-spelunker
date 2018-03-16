@@ -1,15 +1,12 @@
 # currently just renames albums with some variant of '(Explicit)' in their title and applies a SQL script
 import dataset
 
-# constants
-script = 'scrubscript.sql'
-
-# renames albums with 'Explicit' or variants in title
-def renvariant():
+# renames albums with 'Explicit' or other such variants in title
+def rename_variants(username):
 	with dataset.connect('sqlite:///last-fm.db') as db:
 
 		# gets all distinct albums in database
-		sql = 'SELECT DISTINCT album FROM scrobbles'
+		sql = 'SELECT DISTINCT album FROM %s' % username
 		result = db.query(sql)
 		albums = [str(row['album']).replace("'", "\\'") for row in result]
 
@@ -36,21 +33,17 @@ def renvariant():
 		# renames all albums with normal and variant titles to the normal title
 		for album in valid:
 			for alt in valid[album]:
-				sql = 'UPDATE scrobbles SET album = \'%s\' WHERE album = \'%s\'' % (album, alt)
+				sql = 'UPDATE %s SET album = \'%s\' WHERE album = \'%s\'' % (username, album, alt)
 				db.query(sql)
 
 		# normalizes all albums with only variant titles
 		for album in standalone:
-			sql = 'UPDATE scrobbles SET album = \'%s\' WHERE album = \'%s\'' % (album[:-len(standalone[album])], album)
+			sql = 'UPDATE %s SET album = \'%s\' WHERE album = \'%s\'' % (username, album[:-len(standalone[album])], album)
 			db.query(sql)
 
 # applies SQL script
-def dotslash():
-	with open(script, 'r') as file:
+def apply_SQL_script(sql_script):
+	with open(sql_script, 'r') as file:
 		with dataset.connect('sqlite:///last-fm.db') as db:
 			for command in file:
 				db.query(command)
-
-if __name__ == "__main__":
-	renvariant()
-	dotslash()
