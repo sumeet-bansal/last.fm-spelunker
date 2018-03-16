@@ -142,13 +142,13 @@ class Scraper:
 		except KeyError:
 			print("[ERROR] Invalid last.fm username.")
 			quit()
-		count = 0
+		inserted = 0
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(UPDATE_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
-			inserted = self.insert_scrobbles(reversed(scrobbles))
+			inserted += self.insert_scrobbles(reversed(scrobbles))
 			sys.stdout.write("\rUpdated scrobble history with %d new scrobble(s) for %s." % (inserted, self.USER))
 			sys.stdout.flush()
-		if count != 0:
+		if inserted != 0:
 			print()
 
 	def insert_scrobbles(self, scrobbles):
