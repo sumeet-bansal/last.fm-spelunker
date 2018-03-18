@@ -58,7 +58,7 @@ class Scraper:
 		flattened['album'] = flattened.pop('album_text')
 
 		if 'date_uts' in flattened:
-			flattened['timestamp'] = int(flattened.pop('date_uts'))
+			flattened['timestamp'] = max(int(flattened.pop('date_uts')), 86400)
 			flattened['timestamp_text'] = flattened.pop('date_text')
 			dt = datetime.fromtimestamp(flattened['timestamp'])
 			flattened['play_year'] = dt.year
