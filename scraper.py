@@ -124,6 +124,7 @@ class Scraper:
 		# adds all scrobbles to a list
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(self.RECENT_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
+			sys.stdout.write("\r" + (' ' * 60))
 			sys.stdout.write("\rRetrieving scrobble history...\t%d of %d\tfor %s." % (TOTAL_PAGES - page + 1, TOTAL_PAGES, self.USER))
 			sys.stdout.flush()
 			self.insert_scrobbles(reversed(scrobbles))
@@ -146,6 +147,7 @@ class Scraper:
 		for page in reversed(range(1, TOTAL_PAGES + 1)):
 			scrobbles = requests.get(UPDATE_URL % (page, self.PER_PAGE)).json()['recenttracks']['track']
 			inserted += self.insert_scrobbles(reversed(scrobbles))
+			sys.stdout.write("\r" + (' ' * 60))
 			sys.stdout.write("\rUpdated scrobble history with %d new scrobble(s) for %s." % (inserted, self.USER))
 			sys.stdout.flush()
 		if inserted != 0:

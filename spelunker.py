@@ -35,17 +35,15 @@ if __name__ == '__main__':
 	else:
 		scr.get_all_scrobbles()
 
-	sys.stdout.write("\rProcessing scrobble history...")
+	print("Processing scrobble history...")
 	scrubber.rename_variants(user)
 	scrubber.apply_SQL_script('scrubscript.sql')
 	sys.stdout.flush()
-	sys.stdout.write("\rProcessed scrobble history.")
-	sys.stdout.flush()
-	print()
+	print("Processed scrobble history.")
 
 	sys.stdout.write("\rGenerating streamgraph data...")
 	sys.stdout.flush()
 	metric = 'artist'
 	processor.process(user, metric, stream_limit)
-	sys.stdout.write("\rGenerated streamgraph data.")
-	sys.stdout.flush()
+	print("\rGenerated streamgraph data.   ")
+
