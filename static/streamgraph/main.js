@@ -1,9 +1,7 @@
-streamgraph("stream-data.csv", "blue");
-
-var minstamp = -1;
-var colorrange = [];
-
 function streamgraph(csvpath, color) {
+
+	var minstamp = -1;
+	var colorrange = [];
 
 	if (color == "blue") {
 		colorrange = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6", "#F1EEF6"];

@@ -1,30 +1,35 @@
+import dataset
+import processor
 import scraper
 import scrubber
-import dataset
-
 import sys
-sys.path.append('./scrobble-streamgraph/')
-import processor
 
-if __name__ == '__main__':
+from flask import Flask, render_template, Response, stream_with_context
 
-	try:
-		user = sys.argv[1]
-	except IndexError:
-		print("[ERROR] No last.fm username specified.")
-		quit()
+app = Flask(__name__)
 
-	try:
-		stream_limit = sys.argv[2]
-	except IndexError:
-		print("[ERROR] No scrobble minimum specified.")
-		quit()
+'''
+try:
+	user = sys.argv[1]
+except IndexError:
+	print("[ERROR] No last.fm username specified.")
+	quit()
 
-	try:
-		int(stream_limit)
-	except ValueError:
-		print("[ERROR] Scrobble minimum must be an integer.")
-		quit()
+try:
+	stream_limit = sys.argv[2]
+except IndexError:
+	print("[ERROR] No scrobble minimum specified.")
+	quit()
+
+try:
+	int(stream_limit)
+except ValueError:
+	print("[ERROR] Scrobble minimum must be an integer.")
+	quit()
+'''
+
+@app.route('/<user>/<stream_limit>')
+def index(user, stream_limit):
 
 	scr = scraper.Scraper(user)
 	with dataset.connect('sqlite:///last-fm.db') as db:
@@ -47,3 +52,4 @@ if __name__ == '__main__':
 	processor.process(user, metric, stream_limit)
 	print("\rGenerated streamgraph data.   ")
 
+	return render_template('streamgraph/index.html', user=user)

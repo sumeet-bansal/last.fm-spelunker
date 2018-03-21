@@ -47,7 +47,7 @@ def process(username, metric, stream_limit):
 			elif elapsed != len(streams):
 				streams['other'][elapsed] = row['count']
 
-	with open('scrobble-streamgraph/stream-data.csv', 'w') as csv:
+	with open('static/streamgraph/%s.csv' % username, 'w') as csv:
 		csv.write('key,value,date\n')
 		for i in range(timeframe):
 			current = mintime + relativedelta(months=i)
@@ -78,4 +78,4 @@ if __name__ == '__main__':
 		quit()
 
 	metric = 'artist'
-	processor.process(user, metric, stream_limit)
+	process(user, metric, stream_limit)
