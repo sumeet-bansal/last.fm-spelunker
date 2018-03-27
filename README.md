@@ -96,8 +96,10 @@ For Python 3.X:
 
 From here, go to `localhost:8000/scrobble-streamgraph/index.html` on any browser to view the streamgraph.
 
-![scrobble-streamgraph](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/images/streamgraph.png)
-![focused scrobble-streamgraph](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/images/selected-streamgraph.png)
+![screenshot1](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/examples/screenshot1.png)
+![screenshot2](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/examples/screenshot2.png)
+![screenshot3](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/examples/screenshot3.png)
+![screenshot4](https://github.com/sumeet-bansal/last.fm-SQL-scraper/blob/master/examples/screenshot4.png)
 
 ## TODO
 ### Planned Graphs
